@@ -3,8 +3,11 @@
 ## How to use
 ```
 1. gh repo clone Nurech/uptime
-2. opn cmd cd into uptime/, do mvn clean install (make sure to have Maven installed first)
-2. Maven will do "npm install", and builds frontend. When building backend 
+2. opn cmd and cd into project root, do "mvn clean install" (make sure to have Maven installed first)
+3. Maven will do all the work, builds the front and the back
+4. In project root do "java -jar backend/target/backend-1.0.0-SNAPSHOT.jar", to run backend server (keep server running)
+5. Open new cmd and cd into uptime/frontend and do "npm run serve" to run frontend
+6. Go to: http://localhost:5000/
 ```
 
 ### project structure
