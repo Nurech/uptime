@@ -7,47 +7,27 @@
         http://www.liquibase.org/xml/ns/dbchangelog-ext https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <changeSet id="01-05-2021 create initial tables" author="Joosep">
-        <createTable tableName="users">
-            <column name="user_id" type="int">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="guest_name" type="text"/>
-            <column name="username" type="text"/>
-            <column name="password" type="text"/>
-            <column name="first_name" type="text"/>
-            <column name="last_name" type="text"/>
-            <column name="email" type="text"/>
+        <createTable tableName="flights">
+            <column name="id" type="text"/>
+            <column name="validUntil" type="text"/>
+            <column name="legs_id" type="text"/>
+            <column name="legs_routeInfo_id" type="text"/>
+            <column name="legs_routeInfo_from_id" type="text"/>
+            <column name="legs_routeInfo_from_name" type="text"/>
+            <column name="legs_routeInfo_to_id" type="text"/>
+            <column name="legs_routeInfo_to_name" type="text"/>
+            <column name="legs_routeInfo_distance" type="text"/>
+            <column name="legs_providers_id" type="text"/>
+            <column name="legs_providers_company_id" type="text"/>
+            <column name="legs_providers_company_name" type="text"/>
+            <column name="legs_providers_price" type="int"/>
+            <column name="legs_providers_flightStart" type="text"/>
+            <column name="legs_providers_flightEnd" type="text"/>
         </createTable>
 
-        <createTable tableName="events">
-            <column name="event_id" type="int">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="event_name" type="text"/>
-            <column name="event_description" type="text"/>
-            <column name="event_date" type="text"/>
-            <column name="event_author" type="text"/>
-            <column name="gift_id" type="text"/>
+        <createTable tableName="flight_data">
+            <column name="doc" type="json"/>
         </createTable>
 
-        <createTable tableName="roles">
-            <column name="role_id" type="int" autoIncrement="true">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="user_id" type="int"/>
-            <column name="event_id" type="text"/>
-            <column name="role" type="text"/>
-        </createTable>
-
-        <createTable tableName="gifts">
-            <column name="gift_id" type="int" autoIncrement="true">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="gift_title" type="text"/>
-            <column name="gift_amount" type="text"/>
-            <column name="gift_description" type="text"/>
-            <column name="event_id" type="text"/>
-        </createTable>
     </changeSet>
-
 </databaseChangeLog>

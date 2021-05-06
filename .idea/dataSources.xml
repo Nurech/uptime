@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:postgresql://localhost:5432/cosmos</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="uptime@aws" uuid="d94fbd49-8697-4060-ae51-9126ee5e6ec0">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://database-2.crctjy69pvad.us-east-2.rds.amazonaws.com:5432/</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

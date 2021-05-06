@@ -17,8 +17,10 @@
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/compiler-sfc": "^3.0.0",
+    "axios": "^0.21.1",
     "sass": "^1.32.12",
-    "sass-loader": "^8.0.2"
+    "sass-loader": "^8.0.2",
+    "vue-axios": "^3.2.4"
   },
   "_id": "frontend@0.1.0",
   "readme": "ERROR: No README data found!"

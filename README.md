@@ -27,13 +27,13 @@ uptime (Maven project)
 db
 ├── id, validUntil
 ├── [legs]
-│     └── id, routeInfo
-│          └── id, from, name
-│           └── id, to, name
-│               └── [providers]
-│                   └── id, company
-│                       └── id, name
-│                           └── price, flightStart, flightEnd
+│     └─ id, routeInfo
+│          └─ id, from, name
+│           └─ id, to, name
+│               └─ [providers]
+│                   └─ id, company
+│                       └─ id, name
+│                           └─ price, flightStart, flightEnd
 
 ```
 
@@ -45,9 +45,15 @@ db
 3. Create Spring Boot module "backend", add Sring Web and PostgreSQL
 4. Add liquibase IOT test-drop-rebuild
 5. Use https://jsonlint.com/, to validate JSON https://cosmos-odyssey.azurewebsites.net/api/v1.0/TravelPrices, analyze paylod
-6. Use https://sqlizer.io/#/ to consume API JSON into initial table to test with, create liquibase schema accordingly
-7. Looks like 14 routes, make liquibase schema, 
-8. Time stamp looks like yyyy-MM-dd'T'HH:mm:ss.SSSSS
+6. Use https://sqlizer.io/#/ to consume API JSON into initial table
+7. Looks like 14 routes, make liquibase schema
+8. Create deployment enviorment on AWS Elastic Beanstalk
+9. Create database-2 Postgres on AWS RDS
+10. Download JSON from API to string, upload and use use SQLizer API to get SQL dialect
+11. Use SQL dialect to keep db updated, setup scheduler to check for updates
+12. Add use hibernate repository-service-controller models frontend->backend->db
+
+
 
 
 ```
