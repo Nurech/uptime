@@ -22,11 +22,19 @@ uptime (Maven project)
 └── pom.xml (parent POM managing both modules)
 ```
 
-### project structure
+### db structure
 ```
 db
-├─┬ id
-│ ├─ validUntil
+├── id, validUntil
+├── [legs]
+│     └── id, routeInfo
+│          └── id, from, name
+│           └── id, to, name
+│               └── [providers]
+│                   └── id, company
+│                       └── id, name
+│                           └── price, flightStart, flightEnd
+
 ```
 
 
@@ -38,6 +46,8 @@ db
 4. Add liquibase IOT test-drop-rebuild
 5. Use https://jsonlint.com/, to validate JSON https://cosmos-odyssey.azurewebsites.net/api/v1.0/TravelPrices, analyze paylod
 6. Use https://sqlizer.io/#/ to consume API JSON into initial table to test with, create liquibase schema accordingly
+7. Looks like 14 routes, make liquibase schema, 
+8. Time stamp looks like yyyy-MM-dd'T'HH:mm:ss.SSSSS
 
 
 ```
