@@ -13,7 +13,11 @@ import java.sql.DriverManager;
 
 public class RunningScripts {
     @Scheduled(fixedRate = 60000)
-    @Scheduled
+    public static void main(String[] args) {
+        updateDatabase();
+    }
+
+
     @SneakyThrows
     public static void updateDatabase() {
 

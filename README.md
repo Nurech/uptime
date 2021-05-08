@@ -2,6 +2,9 @@
 Assignment: https://smallpdf.com/result#r=106d0db12b1fdcb0e563bafc6b42d56d&t=share-document
 ![](images/img_1.png)
 
+Deployed: http://cosmos-env1.eba-d4k5v2eu.us-east-2.elasticbeanstalk.com/
+![](images/img_2.png)
+
 
 ## How to use
 ```
@@ -53,10 +56,9 @@ db
 8. Create deployment enviorment on AWS Elastic Beanstalk
 9. Create database-2 Postgres on AWS RDS
 10. Download JSON from API as String, upload to and use use SQLizer API to get SQL dialect
-11. Reformat SQL script, run it, update databse
+11. Reformat SQL script, run it, update databse (pretty stupid, but quite proud of this)
 ```
 ![](images/img.png)
-
 ```
 12. Read how long data is valid, fetch new data after refresh
 12. Add use hibernate repository-service-controller models frontend->backend->db

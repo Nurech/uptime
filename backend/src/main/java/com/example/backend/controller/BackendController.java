@@ -20,15 +20,19 @@ public class BackendController {
     private FlightService flightService;
 
     @ResponseBody
-    @RequestMapping(path = "api/info/", method = RequestMethod.POST)
+    @RequestMapping(path = "api/getAll", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public List<Flights> getAll() {
         return flightService.getAll();
     }
-//
-//    @ResponseBody
-//    @RequestMapping(path = "api/post/", method = RequestMethod.GET)
-//    @ResponseStatus(HttpStatus.ACCEPTED)
-//    public List<Flights> addNewRole() { return cosmosService.allInfo(); }
+
+    @ResponseBody
+    @RequestMapping(path = "api/getTime", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    public Flights getAll( Flights request) {
+//        return flightService.getAll().get();
+        return request;
+    }
 
 }
+
