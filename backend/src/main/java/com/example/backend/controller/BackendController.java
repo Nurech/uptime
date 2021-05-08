@@ -1,20 +1,30 @@
 package com.example.backend.controller;
 
 
-import com.example.backend.service.CosmosService;
+import com.example.backend.entity.Flights;
+import com.example.backend.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import java.util.List;
 
 @Controller
 public class BackendController {
 
     @Autowired
-    private CosmosService cosmosService;
-//
-//    @ResponseBody
-//    @RequestMapping(path = "api/info/", method = RequestMethod.GET)
-//    @ResponseStatus(HttpStatus.ACCEPTED)
-//    public List<Flights> addNewRole() { return cosmosService.allInfo(); }
+    private FlightService flightService;
+
+    @ResponseBody
+    @RequestMapping(path = "api/info/", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    public List<Flights> getAll() {
+        return flightService.getAll();
+    }
 //
 //    @ResponseBody
 //    @RequestMapping(path = "api/post/", method = RequestMethod.GET)

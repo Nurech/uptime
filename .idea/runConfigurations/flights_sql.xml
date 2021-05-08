@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="flights.sql" type="DatabaseScript" editBeforeRun="true" nameIsGenerated="true">
+    <script-file value="$PROJECT_DIR$/backend/src/main/resources/downloads/flights.sql" />
+    <script-mode>FILE</script-mode>
+    <data-source id="d94fbd49-8697-4060-ae51-9126ee5e6ec0" namespace="database/&quot;postgres&quot;/schema/&quot;public&quot;" />
+    <method v="2" />
+  </configuration>
+</component>

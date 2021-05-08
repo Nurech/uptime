@@ -1,8 +1,6 @@
 package com.example.backend.model;
 
-public class FlightsObject {
-
-    private long rowId;
+public class FlightsDTO {
     private String id;
     private String validUntil;
     private String legsId;
@@ -11,21 +9,13 @@ public class FlightsObject {
     private String legsRouteInfoFromName;
     private String legsRouteInfoToId;
     private String legsRouteInfoToName;
-    private String legsRouteInfoDistance;
+    private Long legsRouteInfoDistance;
     private String legsProvidersId;
     private String legsProvidersCompanyId;
     private String legsProvidersCompanyName;
-    private String legsProvidersPrice;
+    private Double legsProvidersPrice;
     private String legsProvidersFlightStart;
     private String legsProvidersFlightEnd;
-
-    public long getRowId() {
-        return rowId;
-    }
-
-    public void setRowId(long rowId) {
-        this.rowId = rowId;
-    }
 
     public String getId() {
         return id;
@@ -91,11 +81,11 @@ public class FlightsObject {
         this.legsRouteInfoToName = legsRouteInfoToName;
     }
 
-    public String getLegsRouteInfoDistance() {
+    public Long getLegsRouteInfoDistance() {
         return legsRouteInfoDistance;
     }
 
-    public void setLegsRouteInfoDistance(String legsRouteInfoDistance) {
+    public void setLegsRouteInfoDistance(Long legsRouteInfoDistance) {
         this.legsRouteInfoDistance = legsRouteInfoDistance;
     }
 
@@ -123,11 +113,11 @@ public class FlightsObject {
         this.legsProvidersCompanyName = legsProvidersCompanyName;
     }
 
-    public String getLegsProvidersPrice() {
+    public Double getLegsProvidersPrice() {
         return legsProvidersPrice;
     }
 
-    public void setLegsProvidersPrice(String legsProvidersPrice) {
+    public void setLegsProvidersPrice(Double legsProvidersPrice) {
         this.legsProvidersPrice = legsProvidersPrice;
     }
 
