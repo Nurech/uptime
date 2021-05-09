@@ -51,6 +51,7 @@ public class GetJsonGetSql {
         parameters.put("TableName", "flights");
         parameters.put("DatabaseType", "PostgreSQL");
         parameters.put("FileHasHeaders", "false");
+        parameters.put("InsertSpacing", "1000");
 
         String form = parameters.keySet().stream()
                 .map(key -> key + "=" + URLEncoder.encode(parameters.get(key), StandardCharsets.UTF_8))

@@ -1,7 +1,14 @@
 package com.example.backend.scheduler;
 
+import com.example.backend.controller.BackendController;
+import com.example.backend.service.TimeService;
 import lombok.SneakyThrows;
 import org.apache.ibatis.jdbc.ScriptRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.io.BufferedReader;
@@ -10,14 +17,16 @@ import java.io.Reader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-
+@Configuration
+@EnableScheduling
 public class RunningScripts {
-    @Scheduled(fixedRate = 60000)
-    public static void main(String[] args) {
-        updateDatabase();
-    }
 
+    private static final Logger LOG = LoggerFactory.getLogger(BackendController.class);
 
+    @Autowired
+    private TimeService timeService;
+
+    @Scheduled(fixedRate = 1000000)
     @SneakyThrows
     public static void updateDatabase() {
 
