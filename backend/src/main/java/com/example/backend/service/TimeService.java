@@ -1,7 +1,7 @@
 package com.example.backend.service;
 
 import com.example.backend.controller.BackendController;
-import com.example.backend.model.ValidUntil;
+import com.example.backend.model.ServerInfo;
 import com.example.backend.repository.FlightsRepository;
 import lombok.SneakyThrows;
 import org.joda.time.DateTime;
@@ -27,7 +27,7 @@ public class TimeService {
     private FlightsRepository flightsRepository;
 
     private static final SimpleDateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private static final SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss");
+    private static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 
 
     @ResponseBody
@@ -48,27 +48,27 @@ public class TimeService {
 
     @ResponseBody
     public String getUpdateDatabaseHour() {
-        ValidUntil validUntil = flightsRepository.findByRowId(1);
+        ServerInfo serverInfo = flightsRepository.findByRowId(1);
         //2021-05-09T03:51:35.0934365Z
-        String databaseResponse = validUntil.getValidUntil().substring(11, 19);
+        String databaseResponse = serverInfo.getValidUntil().substring(11, 19);
         LOG.info("GET called on getUpdateDatabaseHour");
         return databaseResponse;
     }
 
     @ResponseBody
     public String getUpdateDatabaseYear() {
-        ValidUntil validUntil = flightsRepository.findByRowId(1);
+        ServerInfo serverInfo = flightsRepository.findByRowId(1);
         //2021-05-09T03:51:35.0934365Z
-        String databaseResponse = validUntil.getValidUntil().substring(0, 10);
+        String databaseResponse = serverInfo.getValidUntil().substring(0, 10);
         LOG.info("GET called on getUpdateDatabaseYear");
         return databaseResponse;
     }
 
     @ResponseBody
     public String getUpdateTime() {
-        ValidUntil validUntil = flightsRepository.findByRowId(1);
+        ServerInfo serverInfo = flightsRepository.findByRowId(1);
         //2021-05-09T03:51:35.0934365Z
-        String databaseResponse = validUntil.getValidUntil().substring(0, 19);
+        String databaseResponse = serverInfo.getValidUntil().substring(0, 19);
         LOG.info("GET called on getUpdateDatabaseYear");
         return databaseResponse;
     }

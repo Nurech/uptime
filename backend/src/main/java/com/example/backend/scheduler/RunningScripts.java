@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -22,11 +21,10 @@ import java.sql.DriverManager;
 public class RunningScripts {
 
     private static final Logger LOG = LoggerFactory.getLogger(BackendController.class);
-
+    public String fixedDelay = "20000";
     @Autowired
     private TimeService timeService;
 
-    @Scheduled(fixedRate = 1000000)
     @SneakyThrows
     public static void updateDatabase() {
 
@@ -51,5 +49,6 @@ public class RunningScripts {
         Reader reader = new BufferedReader(new FileReader("backend/src/main/resources/downloads/flights.sql"));
         //Running the script
         sr.runScript(reader);
+
     }
 }

@@ -8,24 +8,24 @@
 
     <changeSet id="01-05-2021 create initial tables" author="Joosep">
         <createTable tableName="flights">
-            <column name="row_id" type="text">
+            <column name="row_id" type="int">
                 <constraints primaryKey="true"/>
             </column>
             <column name="id" type="text"/>
-            <column name="validUntil" type="text"/>
+            <column name="valid_until" type="text"/>
             <column name="legs_id" type="text"/>
-            <column name="legs_routeInfo_id" type="text"/>
-            <column name="legs_routeInfo_from_id" type="text"/>
-            <column name="legs_routeInfo_from_name" type="text"/>
-            <column name="legs_routeInfo_to_id" type="text"/>
-            <column name="legs_routeInfo_to_name" type="text"/>
-            <column name="legs_routeInfo_distance" type="bigint"/>
+            <column name="legs_route_info_id" type="text"/>
+            <column name="legs_route_info_from_id" type="text"/>
+            <column name="legs_route_info_from_name" type="text"/>
+            <column name="legs_route_info_to_id" type="text"/>
+            <column name="legs_route_info_to_name" type="text"/>
+            <column name="legs_route_info_distance" type="bigint"/>
             <column name="legs_providers_id" type="text"/>
             <column name="legs_providers_company_id" type="text"/>
             <column name="legs_providers_company_name" type="text"/>
             <column name="legs_providers_price" type="number"/>
-            <column name="legs_providers_flightStart" type="text"/>
-            <column name="legs_providers_flightEnd" type="text"/>
+            <column name="legs_providers_flight_start" type="text"/>
+            <column name="legs_providers_flight_end" type="text"/>
         </createTable>
 
     </changeSet>

@@ -34,7 +34,7 @@ uptime (Maven project)
 ### db structure
 ```
 db
-├── id, validUntil
+├── id, serverInfo
 ├── [legs]
 │     └─ id, routeInfo
 │          └─ id, from, name

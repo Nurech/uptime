@@ -1,7 +1,7 @@
 package com.example.backend.controller;
 
 
-import com.example.backend.model.ValidUntil;
+import com.example.backend.model.ServerInfo;
 import com.example.backend.repository.FlightsRepository;
 import com.example.backend.service.FlightService;
 import com.example.backend.service.TimeService;
@@ -26,16 +26,16 @@ public class BackendController {
     private FlightsRepository flightsRepository;
 
     @ResponseBody
-    @RequestMapping(path = "/getValidUntil")
-    public String getValidUntil() {
-        LOG.info("GET called on validUntil");
-        ValidUntil validUntil = flightsRepository.findByRowId(1);
-        String databaseResponse = validUntil.getValidUntil();
-        String serverTime = timeService.myServerTimeHour() + timeService.myServerTimeYear();
-        String getUpdateDatabaseHour = timeService.getUpdateDatabaseHour();
-        String getUpdateDatabaseYear = timeService.getUpdateDatabaseYear();
-        long difference = timeService.getNextUpdateTime();
-        return "DB response= " + databaseResponse + " ServerTime= " + serverTime + " getUpdateHour= " + getUpdateDatabaseHour + " getUpdateYear= " + getUpdateDatabaseYear + " difference= " + difference;
+    @RequestMapping(path = "/serverinfo")
+    public ServerInfo getValidUntil() {
+        ServerInfo serverInfo = new ServerInfo();
+        serverInfo.setId(flightsRepository.findByRowId(1).getId());
+        serverInfo.setValidUntil(flightsRepository.findByRowId(1).getValidUntil());
+        serverInfo.setServerTime(timeService.myServerTimeHour());
+        serverInfo.setUpdateTime(timeService.getUpdateDatabaseHour());
+        serverInfo.setNextUpdate(timeService.getNextUpdateTime());
+        LOG.info("GET called on serverInfo");
+        return serverInfo;
     }
 
 }

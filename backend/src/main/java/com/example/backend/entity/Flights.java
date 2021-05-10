@@ -1,5 +1,7 @@
 package com.example.backend.entity;
 
+import com.example.backend.model.ServerInfo;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -7,11 +9,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "flights")
-public class Flights {
+public class Flights extends ServerInfo {
 
     @Id
     @Column(name = "row_id")
-    private String rowId;
+    private long rowId;
 
     @Column(name = "id")
     private String id;
@@ -58,11 +60,11 @@ public class Flights {
     @Column(name = "legs_providers_flightEnd")
     private String legsProvidersFlightEnd;
 
-    public String getRowId() {
+    public long getRowId() {
         return rowId;
     }
 
-    public void setRowId(String rowId) {
+    public void setRowId(long rowId) {
         this.rowId = rowId;
     }
 
