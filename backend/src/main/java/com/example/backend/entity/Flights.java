@@ -18,47 +18,44 @@ public class Flights extends ServerInfo {
     @Column(name = "id")
     private String id;
 
-    @Column(name = "validUntil")
+    @Column(name = "valid_until")
     private String validUntil;
 
-    @Column(name = "legs_id")
+    @Column(name = "leg_id")
     private String legsId;
 
-    @Column(name = "legs_routeInfo_id")
-    private String legsRouteInfoId;
+    @Column(name = "route_id")
+    private String routeId;
 
-    @Column(name = "legs_routeInfo_from_id")
-    private String legsRouteInfoFromId;
+    @Column(name = "route_from_id")
+    private String routeFromId;
 
-    @Column(name = "legs_routeInfo_from_name")
-    private String legsRouteInfoFromName;
+    @Column(name = "route_from_name")
+    private String routeFromName;
 
-    @Column(name = "legs_routeInfo_to_id")
-    private String legsRouteInfoToId;
+    @Column(name = "route_to_id")
+    private String routeToId;
 
-    @Column(name = "legs_routeInfo_to_name")
-    private String legsRouteInfoToName;
+    @Column(name = "route_to_name")
+    private String routeToName;
 
-    @Column(name = "legs_routeInfo_distance")
-    private Long legsRouteInfoDistance;
+    @Column(name = "route_distance")
+    private long routeDistance;
 
-    @Column(name = "legs_providers_id")
-    private String legsProvidersId;
+    @Column(name = "provider_id")
+    private String providerId;
 
-    @Column(name = "legs_providers_company_id")
-    private String legsProvidersCompanyId;
+    @Column(name = "provider_price")
+    private double providerPrice;
 
-    @Column(name = "legs_providers_company_name")
-    private String legsProvidersCompanyName;
+    @Column(name = "provider_flight_start")
+    private String providerFlightStart;
 
-    @Column(name = "legs_providers_price")
-    private Double legsProvidersPrice;
+    @Column(name = "provider_flight_end")
+    private String providerFlightEnd;
 
-    @Column(name = "legs_providers_flightStart")
-    private String legsProvidersFlightStart;
-
-    @Column(name = "legs_providers_flightEnd")
-    private String legsProvidersFlightEnd;
+    @Column(name = "provider_company_id")
+    private String provider_company_name;
 
     public long getRowId() {
         return rowId;
@@ -68,18 +65,22 @@ public class Flights extends ServerInfo {
         this.rowId = rowId;
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
     }
 
+    @Override
     public String getValidUntil() {
         return validUntil;
     }
 
+    @Override
     public void setValidUntil(String validUntil) {
         this.validUntil = validUntil;
     }
@@ -92,99 +93,91 @@ public class Flights extends ServerInfo {
         this.legsId = legsId;
     }
 
-    public String getLegsRouteInfoId() {
-        return legsRouteInfoId;
+    public String getRouteId() {
+        return routeId;
     }
 
-    public void setLegsRouteInfoId(String legsRouteInfoId) {
-        this.legsRouteInfoId = legsRouteInfoId;
+    public void setRouteId(String routeId) {
+        this.routeId = routeId;
     }
 
-    public String getLegsRouteInfoFromId() {
-        return legsRouteInfoFromId;
+    public String getRouteFromId() {
+        return routeFromId;
     }
 
-    public void setLegsRouteInfoFromId(String legsRouteInfoFromId) {
-        this.legsRouteInfoFromId = legsRouteInfoFromId;
+    public void setRouteFromId(String routeFromId) {
+        this.routeFromId = routeFromId;
     }
 
-    public String getLegsRouteInfoFromName() {
-        return legsRouteInfoFromName;
+    public String getRouteFromName() {
+        return routeFromName;
     }
 
-    public void setLegsRouteInfoFromName(String legsRouteInfoFromName) {
-        this.legsRouteInfoFromName = legsRouteInfoFromName;
+    public void setRouteFromName(String routeFromName) {
+        this.routeFromName = routeFromName;
     }
 
-    public String getLegsRouteInfoToId() {
-        return legsRouteInfoToId;
+    public String getRouteToId() {
+        return routeToId;
     }
 
-    public void setLegsRouteInfoToId(String legsRouteInfoToId) {
-        this.legsRouteInfoToId = legsRouteInfoToId;
+    public void setRouteToId(String routeToId) {
+        this.routeToId = routeToId;
     }
 
-    public String getLegsRouteInfoToName() {
-        return legsRouteInfoToName;
+    public String getRouteToName() {
+        return routeToName;
     }
 
-    public void setLegsRouteInfoToName(String legsRouteInfoToName) {
-        this.legsRouteInfoToName = legsRouteInfoToName;
+    public void setRouteToName(String routeToName) {
+        this.routeToName = routeToName;
     }
 
-    public Long getLegsRouteInfoDistance() {
-        return legsRouteInfoDistance;
+    public long getRouteDistance() {
+        return routeDistance;
     }
 
-    public void setLegsRouteInfoDistance(Long legsRouteInfoDistance) {
-        this.legsRouteInfoDistance = legsRouteInfoDistance;
+    public void setRouteDistance(long routeDistance) {
+        this.routeDistance = routeDistance;
     }
 
-    public String getLegsProvidersId() {
-        return legsProvidersId;
+    public String getProviderId() {
+        return providerId;
     }
 
-    public void setLegsProvidersId(String legsProvidersId) {
-        this.legsProvidersId = legsProvidersId;
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
     }
 
-    public String getLegsProvidersCompanyId() {
-        return legsProvidersCompanyId;
+    public double getProviderPrice() {
+        return providerPrice;
     }
 
-    public void setLegsProvidersCompanyId(String legsProvidersCompanyId) {
-        this.legsProvidersCompanyId = legsProvidersCompanyId;
+    public void setProviderPrice(double providerPrice) {
+        this.providerPrice = providerPrice;
     }
 
-    public String getLegsProvidersCompanyName() {
-        return legsProvidersCompanyName;
+    public String getProviderFlightStart() {
+        return providerFlightStart;
     }
 
-    public void setLegsProvidersCompanyName(String legsProvidersCompanyName) {
-        this.legsProvidersCompanyName = legsProvidersCompanyName;
+    public void setProviderFlightStart(String providerFlightStart) {
+        this.providerFlightStart = providerFlightStart;
     }
 
-    public Double getLegsProvidersPrice() {
-        return legsProvidersPrice;
+    public String getProviderFlightEnd() {
+        return providerFlightEnd;
     }
 
-    public void setLegsProvidersPrice(Double legsProvidersPrice) {
-        this.legsProvidersPrice = legsProvidersPrice;
+    public void setProviderFlightEnd(String providerFlightEnd) {
+        this.providerFlightEnd = providerFlightEnd;
     }
 
-    public String getLegsProvidersFlightStart() {
-        return legsProvidersFlightStart;
+    public String getProvider_company_name() {
+        return provider_company_name;
     }
 
-    public void setLegsProvidersFlightStart(String legsProvidersFlightStart) {
-        this.legsProvidersFlightStart = legsProvidersFlightStart;
-    }
-
-    public String getLegsProvidersFlightEnd() {
-        return legsProvidersFlightEnd;
-    }
-
-    public void setLegsProvidersFlightEnd(String legsProvidersFlightEnd) {
-        this.legsProvidersFlightEnd = legsProvidersFlightEnd;
+    public void setProvider_company_name(String provider_company_name) {
+        this.provider_company_name = provider_company_name;
     }
 }

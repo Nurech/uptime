@@ -1,8 +1,5 @@
 package com.example.backend.scheduler;
 
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -33,21 +30,17 @@ public class GetJsonGetSql {
 
     public void getJsonGetSql() throws IOException, InterruptedException {
 
-        //DOWNLOAD JSON FROM API
+        // download original JSON from API
         String json = downloadJson(jsonUrl);
 
-        // add row_id to before "id" in json
-        File textFile = new File("backend/src/main/resources/downloads/file.json");
-        String data = FileUtils.readFileToString(textFile);
-        data = data.replaceFirst("\"id\"","\"row_id\": \"replaceME\",\n" +
-                "\t\"id\"");
-        FileUtils.writeStringToFile(textFile, data);
+        // re-format original JSON
+        JsonToObject.reformat();
 
         //GET FILE ID
         HttpClient client = HttpClient.newHttpClient();
         Map<String, String> parameters = new HashMap<>();
         parameters.put("FileType", "json");
-        parameters.put("FileName", "file.json");
+        parameters.put("FileName", "original.json");
         parameters.put("TableName", "flights");
         parameters.put("DatabaseType", "PostgreSQL");
         parameters.put("FileHasHeaders", "false");
@@ -77,10 +70,9 @@ public class GetJsonGetSql {
 
 
         // UPLOAD
-
-        List<String> file = new ArrayList<>(Files.readAllLines(Path.of("backend/src/main/resources/downloads/file.json")));
+        List<String> file = new ArrayList<>(Files.readAllLines(Path.of("backend/src/main/resources/downloads/newJson.json")));
         List<byte[]> bytes = new ArrayList<>();
-        bytes.add("--ThisIsABoundryWeeeeeeee\r\nContent-Disposition: form-data; name=\"file\"; filename=\"file.json\"\r\nContent-Type: application/octet-stream\r\n\r\n".getBytes(StandardCharsets.UTF_8));
+        bytes.add("--ThisIsABoundryWeeeeeeee\r\nContent-Disposition: form-data; name=\"file\"; filename=\"original.json\"\r\nContent-Type: application/octet-stream\r\n\r\n".getBytes(StandardCharsets.UTF_8));
         file.forEach(line -> bytes.add((line + "\r\n").getBytes(StandardCharsets.UTF_8)));
         bytes.add("--ThisIsABoundryWeeeeeeee--".getBytes(StandardCharsets.UTF_8));
 
@@ -93,7 +85,7 @@ public class GetJsonGetSql {
                 .POST(HttpRequest.BodyPublishers.ofByteArray(result))
                 .build();
         HttpResponse<String> uploadResponse = client.send(postUploadFile, HttpResponse.BodyHandlers.ofString());
-        System.out.println(uploadResponse.body());
+        System.out.println(uploadResponse.body() + " starting upload...");
         Thread.sleep(5000);
 
         HttpRequest getResult = HttpRequest.newBuilder()
@@ -107,8 +99,7 @@ public class GetJsonGetSql {
         System.out.println(resultssss.body());
         Thread.sleep(2000);
 
-        // PUT
-
+        // PUT to convert
         Map<String, String> putParameters = new HashMap<>();
         putParameters.put("Status", "Uploaded");
 
@@ -155,7 +146,7 @@ public class GetJsonGetSql {
                 }
             }
 
-            // extract url, make browser friendly
+            // extract url from download reply, make browser friendly
             for (String possible : resultUrlRemoveBraces.split(",")) {
                 if (possible.contains("ResultUrl")) {
                     String quoted = possible.split(":")[2];
@@ -175,7 +166,8 @@ public class GetJsonGetSql {
     }
 
     private static String downloadJson(String jsonUrl) {
-        //DOWNLOAD JSON
+
+        // download original JSON
         String json = null;
         try {
             URL url = new URL(jsonUrl);
@@ -190,7 +182,7 @@ public class GetJsonGetSql {
             json = streamToString(inStream); // input stream to string
 
             // save string as JSON
-            Path path = Paths.get("backend/src/main/resources/downloads/file.json");
+            Path path = Paths.get("backend/src/main/resources/downloads/original.json");
             String contents = json;
             try {
                 writeString(path, contents, StandardCharsets.UTF_8);
@@ -201,7 +193,7 @@ public class GetJsonGetSql {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        System.out.println("{\"Status\":\"JSON Downloaded\"} " + json.substring(1, 60) + "...");
+        System.out.println("{\"Status\":\"JSON Downloaded\"} " + json.substring(1, 87) + "...");
 
         return json;
     }

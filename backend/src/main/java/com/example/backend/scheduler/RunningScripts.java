@@ -21,14 +21,13 @@ import java.sql.DriverManager;
 public class RunningScripts {
 
     private static final Logger LOG = LoggerFactory.getLogger(BackendController.class);
-    public String fixedDelay = "20000";
     @Autowired
     private TimeService timeService;
 
     @SneakyThrows
     public static void updateDatabase() {
 
-        // DOWNLOAD JSON
+        // download JSON, reformat, convert to SQL commands
         GetJsonGetSql getJsonGetSql = new GetJsonGetSql();
         getJsonGetSql.getJsonGetSql();
 
@@ -39,14 +38,18 @@ public class RunningScripts {
 
         //Registering the Driver
         DriverManager.registerDriver(new org.postgresql.Driver());
+
         //Getting the connection
         String mysqlUrl = "jdbc:postgresql://database-2.crctjy69pvad.us-east-2.rds.amazonaws.com:5432/";
         Connection con = DriverManager.getConnection(mysqlUrl, "postgres", "password");
-        System.out.println("Connection established......");
+        System.out.println("Connection established... Doing SQL query INSERT INTO");
+
         //Initialize the script runner
         ScriptRunner sr = new ScriptRunner(con);
+
         //Creating a reader object
         Reader reader = new BufferedReader(new FileReader("backend/src/main/resources/downloads/flights.sql"));
+
         //Running the script
         sr.runScript(reader);
 

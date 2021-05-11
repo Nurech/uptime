@@ -34,7 +34,6 @@ public class TimeService {
     public String myServerTimeHour() {
         Date d1 = new Date();
         String formattedDateHour = timeFormat.format(d1);
-        LOG.info("GET called on serverTimeHour");
         return formattedDateHour;
     }
 
@@ -42,16 +41,15 @@ public class TimeService {
     public String myServerTimeYear() {
         Date d2 = new Date();
         String formattedDateYear = dayFormat.format(d2);
-        LOG.info("GET called on serverTimeYear");
         return formattedDateYear;
     }
 
     @ResponseBody
     public String getUpdateDatabaseHour() {
+        // get valid until from first row
         ServerInfo serverInfo = flightsRepository.findByRowId(1);
         //2021-05-09T03:51:35.0934365Z
         String databaseResponse = serverInfo.getValidUntil().substring(11, 19);
-        LOG.info("GET called on getUpdateDatabaseHour");
         return databaseResponse;
     }
 
@@ -60,7 +58,6 @@ public class TimeService {
         ServerInfo serverInfo = flightsRepository.findByRowId(1);
         //2021-05-09T03:51:35.0934365Z
         String databaseResponse = serverInfo.getValidUntil().substring(0, 10);
-        LOG.info("GET called on getUpdateDatabaseYear");
         return databaseResponse;
     }
 
@@ -69,9 +66,9 @@ public class TimeService {
         ServerInfo serverInfo = flightsRepository.findByRowId(1);
         //2021-05-09T03:51:35.0934365Z
         String databaseResponse = serverInfo.getValidUntil().substring(0, 19);
-        LOG.info("GET called on getUpdateDatabaseYear");
         return databaseResponse;
     }
+
 
     @ResponseBody
     @SneakyThrows

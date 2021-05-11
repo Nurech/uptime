@@ -13,19 +13,19 @@
             </column>
             <column name="id" type="text"/>
             <column name="valid_until" type="text"/>
-            <column name="legs_id" type="text"/>
-            <column name="legs_route_info_id" type="text"/>
-            <column name="legs_route_info_from_id" type="text"/>
-            <column name="legs_route_info_from_name" type="text"/>
-            <column name="legs_route_info_to_id" type="text"/>
-            <column name="legs_route_info_to_name" type="text"/>
-            <column name="legs_route_info_distance" type="bigint"/>
-            <column name="legs_providers_id" type="text"/>
-            <column name="legs_providers_company_id" type="text"/>
-            <column name="legs_providers_company_name" type="text"/>
-            <column name="legs_providers_price" type="number"/>
-            <column name="legs_providers_flight_start" type="text"/>
-            <column name="legs_providers_flight_end" type="text"/>
+            <column name="leg_id" type="text"/>
+            <column name="route_id" type="text"/>
+            <column name="route_from_id" type="text"/>
+            <column name="route_from_name" type="text"/>
+            <column name="route_to_id" type="text"/>
+            <column name="route_to_name" type="text"/>
+            <column name="route_distance" type="bigint"/>
+            <column name="provider_id" type="text"/>
+            <column name="provider_price" type="double"/>
+            <column name="provider_flight_start" type="text"/>
+            <column name="provider_flight_end" type="text"/>
+            <column name="provider_company_id" type="text"/>
+            <column name="provider_company_name" type="text"/>
         </createTable>
 
     </changeSet>

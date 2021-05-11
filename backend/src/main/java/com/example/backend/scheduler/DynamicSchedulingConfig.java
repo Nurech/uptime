@@ -38,7 +38,7 @@ public class DynamicSchedulingConfig implements SchedulingConfigurer {
         taskRegistrar.setScheduler(taskExecutor());
         taskRegistrar.addTriggerTask(
 
-                // run when time has arrived has arrived
+                // run update db when data has expired
                 new Runnable() {
                     @Override
                     public void run() {
@@ -46,7 +46,7 @@ public class DynamicSchedulingConfig implements SchedulingConfigurer {
                     }
                 },
 
-                // set trigger to be last run time + mills (mills are from now till future time)
+                // set trigger to be when time validUntil has arrived
                 new Trigger() {
                     @Override
                     public Date nextExecutionTime(TriggerContext context) {

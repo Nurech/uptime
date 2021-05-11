@@ -12,42 +12,29 @@ public class EditSqlCommands {
         // REPLACE TRAILING PART OF SQL SCRIPT TO DO UPDATES
         File textFile = new File("backend/src/main/resources/downloads/flights.sql");
         String end = " \nON CONFLICT (row_id)\n" +
-                "DO UPDATE SET id = excluded.id,\n" +
+                "DO UPDATE SET row_id = excluded.row_id,\n" +
+                "              \"id\" = excluded.\"id\",\n" +
                 "              \"valid_until\" = excluded.\"valid_until\",\n" +
-                "              legs_id= excluded.legs_id,\n" +
-                "              \"legs_route_info_id\"=excluded.\"legs_route_info_id\",\n" +
-                "              \"legs_route_info_from_name\"=excluded.\"legs_route_info_from_name\",\n" +
-                "              \"legs_route_info_to_id\" = excluded.\"legs_route_info_to_id\",\n" +
-                "              \"legs_route_info_to_name\"=excluded.\"legs_route_info_to_name\",\n" +
-                "              \"legs_route_info_distance\"=excluded.\"legs_route_info_distance\",\n" +
-                "              \"legs_providers_id\"=excluded.\"legs_providers_id\",\n" +
-                "              \"legs_providers_company_id\"=excluded.\"legs_providers_company_id\",\n" +
-                "              \"legs_providers_company_name\"=excluded.\"legs_providers_company_name\",\n" +
-                "              \"legs_providers_price\"=excluded.\"legs_providers_price\",\n" +
-                "              \"legs_providers_flight_start\"=excluded.\"legs_providers_flight_start\",\n" +
-                "              \"legs_providers_flight_end\"=excluded.\"legs_providers_flight_end\";";
+                "              \"leg_id\" = excluded.\"leg_id\",\n" +
+                "              \"route_id\"=excluded.\"route_id\",\n" +
+                "              \"route_from_id\"=excluded.\"route_from_id\",\n" +
+                "              \"route_from_name\" = excluded.\"route_from_name\",\n" +
+                "              \"route_to_id\"=excluded.\"route_to_id\",\n" +
+                "              \"route_to_name\"=excluded.\"route_to_name\",\n" +
+                "              \"route_distance\"=excluded.\"route_distance\",\n" +
+                "              \"provider_id\"=excluded.\"provider_id\",\n" +
+                "              \"provider_price\"=excluded.\"provider_price\",\n" +
+                "              \"provider_flight_start\"=excluded.\"provider_flight_start\",\n" +
+                "              \"provider_flight_end\"=excluded.\"provider_flight_end\",\n" +
+                "              \"provider_company_id\"=excluded.\"provider_company_id\",\n" +
+                "              \"provider_company_name\"=excluded.\"provider_company_name\";";
 
         try {
 
-            // generated SQL has "rowId":"replaceME"
-            // remove "replaceME" replace with row number
+            // read SQL file, add update commands, rewrite flights table data after it's expired
             String data = FileUtils.readFileToString(textFile);
-            int counter = 0;
-            for (int i = 0; i < data.length(); i++) {
-                if (data.charAt(i) == '(') {
-                    data = data.replaceFirst("replaceME",String.format("%d", counter));
-                    counter++;
-                }
-            }
-
-            // fix stupid column names, use snake case
-            data = data.replaceAll("flightStart","flight_start");
-            data = data.replaceAll("flightEnd","flight_end");
-            data = data.replaceAll("routeInfo","route_info");
-            data = data.replaceAll("validUntil","valid_until");
-
             // remove last ; to add ending part
-            data = data.stripTrailing().replaceAll(";$","");
+            data = data.stripTrailing().replaceAll(";$","").replaceAll("flights_","");
             FileUtils.writeStringToFile(textFile, data + end);
 
         } catch (IOException e) {
