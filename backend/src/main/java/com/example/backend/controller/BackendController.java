@@ -1,7 +1,7 @@
 package com.example.backend.controller;
 
 
-import com.example.backend.model.ServerInfo;
+import com.example.backend.model.AllData;
 import com.example.backend.repository.FlightsRepository;
 import com.example.backend.service.FlightService;
 import com.example.backend.service.TimeService;
@@ -9,8 +9,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/api")
@@ -25,17 +29,11 @@ public class BackendController {
     @Autowired
     private FlightsRepository flightsRepository;
 
+    @CrossOrigin
     @ResponseBody
-    @RequestMapping(path = "/serverinfo")
-    public ServerInfo getValidUntil() {
-        ServerInfo serverInfo = new ServerInfo();
-        serverInfo.setId(flightsRepository.findByRowId(1).getId());
-        serverInfo.setValidUntil(flightsRepository.findByRowId(1).getValidUntil());
-        serverInfo.setServerTime(timeService.myServerTimeHour());
-        serverInfo.setUpdateTime(timeService.getUpdateDatabaseHour());
-        serverInfo.setNextUpdate(timeService.getNextUpdateTime());
-        LOG.info("GET called on serverInfo");
-        return serverInfo;
+    @GetMapping(path = "/serverinfo")
+    public List<AllData> getAllFlights() {
+        return flightService.getLatestApiInfo();
     }
 
 }

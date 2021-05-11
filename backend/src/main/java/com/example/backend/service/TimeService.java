@@ -1,7 +1,6 @@
 package com.example.backend.service;
 
 import com.example.backend.controller.BackendController;
-import com.example.backend.model.ServerInfo;
 import com.example.backend.repository.FlightsRepository;
 import lombok.SneakyThrows;
 import org.joda.time.DateTime;
@@ -15,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -30,6 +31,7 @@ public class TimeService {
     private static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 
 
+    //TODO do not read from file...
     @ResponseBody
     public String myServerTimeHour() {
         Date d1 = new Date();
@@ -44,51 +46,55 @@ public class TimeService {
         return formattedDateYear;
     }
 
+    @SneakyThrows
     @ResponseBody
-    public String getUpdateDatabaseHour() {
-        // get valid until from first row
-        ServerInfo serverInfo = flightsRepository.findByRowId(1);
-        //2021-05-09T03:51:35.0934365Z
-        String databaseResponse = serverInfo.getValidUntil().substring(11, 19);
-        return databaseResponse;
+    public String latestValidUntil() {
+        // get latest valid until hour from latest API JSON
+        String jsonFileToString = Files.readString(Path.of("backend/src/main/resources/downloads/newJson.json"));
+        // target T03:51:35
+        String time = jsonFileToString.substring(108, 116);
+        return time;
     }
 
+    @SneakyThrows
     @ResponseBody
     public String getUpdateDatabaseYear() {
-        ServerInfo serverInfo = flightsRepository.findByRowId(1);
-        //2021-05-09T03:51:35.0934365Z
-        String databaseResponse = serverInfo.getValidUntil().substring(0, 10);
-        return databaseResponse;
+        String jsonFileToString = Files.readString(Path.of("backend/src/main/resources/downloads/newJson.json"));
+        // target is latest: 03:51:35.0934365Z
+        String year = jsonFileToString.substring(97, 106);
+        return year;
     }
 
+    @SneakyThrows
     @ResponseBody
-    public String getUpdateTime() {
-        ServerInfo serverInfo = flightsRepository.findByRowId(1);
-        //2021-05-09T03:51:35.0934365Z
-        String databaseResponse = serverInfo.getValidUntil().substring(0, 19);
-        return databaseResponse;
-    }
+    public String getApiUpdateTime() {
+        String latestApiValidUntil = flightsRepository.findTopByOrderByRowIdDesc().getValidUntil();
 
+        //target 2021-05-09T03:51:35.0934365Z (2021-05-09T03:51:35.09)
+        String fullTime = latestApiValidUntil.substring(0, 18);
+        LOG.info("Latest API is valid until: " + fullTime);
+        return fullTime;
+    }
 
     @ResponseBody
     @SneakyThrows
     public long getNextUpdateTime() {
 
-//        timezone is Zulu (UTC)
-//        2021-05-09T06:21:43.183977Z
-
-        //TODO remember to change this if local or on server
+        // Z stands for timezone is Zulu (UTC)
+        // 2021-05-09T06:21:43.183977Z
+        // my time is 3 hours behind from API server
         DateTime startDate = DateTime.now().minusHours(3);
 
-        String dateTime = getUpdateTime();
+        String dateTime = getApiUpdateTime();
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss");
         DateTime endDate = DateTime.parse(dateTime, formatter);
 
+        // how long till next update in mills
         Period period = new Period(startDate, endDate, PeriodType.millis());
-        long nextUpdate =  period.getMillis();
+        long nextUpdate = period.getMillis();
 
         LOG.info("my time: " + myServerTimeHour());
-        LOG.info("update time: " + getUpdateDatabaseHour());
+        LOG.info("update time: " + latestValidUntil());
         LOG.info("startDate: " + startDate);
         LOG.info("endDate: " + endDate);
         LOG.info("mills until update: " + nextUpdate);

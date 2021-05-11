@@ -2,6 +2,7 @@ package com.example.backend.scheduler;
 
 import com.example.backend.controller.BackendController;
 import com.example.backend.service.TimeService;
+import org.joda.time.LocalTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,7 @@ public class DynamicSchedulingConfig implements SchedulingConfigurer {
                 new Runnable() {
                     @Override
                     public void run() {
-                        RunningScripts.updateDatabase();
+                        UpdateDatabase.updateDatabase();
                     }
                 },
 
@@ -56,7 +57,7 @@ public class DynamicSchedulingConfig implements SchedulingConfigurer {
                         Instant nextExecutionTime =
                                 lastCompletionTime.orElseGet(Date::new).toInstant()
                                         .plusMillis(mills);
-                        LOG.info("next update in mills: " + mills + " OR " + (mills / 1000) / 60 + " minutes and " + (mills / 1000) % 60 + " seconds");
+                        LOG.info("Next update in: " + (mills / 1000) / 60 + " minutes and " + (mills / 1000) % 60 + " seconds. At " + LocalTime.now().plusMillis((int) mills));
                         return Date.from(nextExecutionTime);
                     }
                 }

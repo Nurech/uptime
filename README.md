@@ -34,25 +34,21 @@ uptime (Maven project)
 ### db structure
 ```
 db
-├── row_id
-├── id
-├── valid_until
-├── legs_id
-├── providers_id
-├── flights_end
-├── flight_start
-├── price
-├── company_id
-├── company_name
-├── route_id
-├── from_id
-├── from_name
-├── to_id
-├── to_name
-├── distance
-
-
-```
+├──┬ flights
+│  ├── rowId
+│  ├── id
+│  ├── validUntil
+│  ├── legsId
+│  ├── routeId
+│  ├── routeFromId
+│  ├── routeFromName
+│  ├── routeToId
+│  ├── routeToName
+│  ├── routeDistance
+│  ├── providerId
+│  ├── providerPrice
+│  ├── providerFlightStart
+│  ├── providerFlightEnd
 
 
 ### what I did
@@ -81,6 +77,12 @@ db
 14. Read how long data is valid, fetch new data after refresh using Spring @Scheduled
 15. Add use hibernate repository-service-controller models frontend->backend->db
 16. Scratch Vue3 frontend, switch back to Vue2 (node issues and Typescript...)
+17. Add vuetify frontend to display data
+18. Add components, entity, dao and service logic for bookings
+19. Add user_bookings table, show last 100 bookings in graph UI to encourage others to book
+20. To save last 15 API details add table flights_history where all API detailer are going to be retained
+21. delete make user booking "inactive" when not in last 15 price list
+    check this on each API update
 ```
 
 ```
@@ -89,6 +91,6 @@ Problems to understand here:
 2. New JSON needs to be constructed so data manipulation is made possible
 3. Inserting deconstructred JSON data into db
 4. Setting up frontend and backend communication
-5. Selecting appropiate user UI for data interaction
+5. Selecting appropiate user UI for data interaction (Vuetify data tables)
 6. Use Security (data transfrer with apropiate DTO's) since were also taking user input (bookings)
 ```

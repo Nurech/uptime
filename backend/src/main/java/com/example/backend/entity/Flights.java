@@ -2,16 +2,14 @@ package com.example.backend.entity;
 
 import com.example.backend.model.ServerInfo;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "flights")
 public class Flights extends ServerInfo {
 
     @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "row_id")
     private long rowId;
 
