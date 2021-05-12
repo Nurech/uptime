@@ -28,12 +28,12 @@ public class UpdateDatabase {
     public static void updateDatabase() {
 
         // download JSON, reformat, convert to SQL commands
-        ConvertJsonDataToSql convertJsonDataToSql = new ConvertJsonDataToSql();
-        convertJsonDataToSql.getJsonGetSql();
+        JsonToSql jsonToSql = new JsonToSql();
+        jsonToSql.getJsonGetSql();
 
         // reformat SQL script before running, add DO UPDATE
-        EditSqlCommands editSqlCommands = new EditSqlCommands();
-        editSqlCommands.editSqlCommands();
+        SqlScript sqlScript = new SqlScript();
+        sqlScript.editSqlCommands();
         Thread.sleep(100);
 
         //Registering the Driver

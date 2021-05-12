@@ -8,4 +8,6 @@ Vue.use(Vuetify)
 
 const opts = {}
 
-export default new Vuetify(opts)
+export default new Vuetify({
+    theme: { dark: false },
+})

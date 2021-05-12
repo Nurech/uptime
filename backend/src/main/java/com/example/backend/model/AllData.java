@@ -2,7 +2,6 @@ package com.example.backend.model;
 
 public class AllData {
 
-    private long rowId;
     private String id;
     private String validUntil;
     private String legsId;
@@ -16,23 +15,10 @@ public class AllData {
     private double providerPrice;
     private String providerFlightStart;
     private String providerFlightEnd;
+    private String providerCompanyId;
+    private String providerCompanyName;
     private String bookingId;
 
-    public String getBookingId() {
-        return bookingId;
-    }
-
-    public void setBookingId(String bookingId) {
-        this.bookingId = bookingId;
-    }
-
-    public long getRowId() {
-        return rowId;
-    }
-
-    public void setRowId(long rowId) {
-        this.rowId = rowId;
-    }
 
     public String getId() {
         return id;
@@ -136,5 +122,29 @@ public class AllData {
 
     public void setProviderFlightEnd(String providerFlightEnd) {
         this.providerFlightEnd = providerFlightEnd;
+    }
+
+    public String getProviderCompanyId() {
+        return providerCompanyId;
+    }
+
+    public void setProviderCompanyId(String providerCompanyId) {
+        this.providerCompanyId = providerCompanyId;
+    }
+
+    public String getProviderCompanyName() {
+        return providerCompanyName;
+    }
+
+    public void setProviderCompanyName(String providerCompanyName) {
+        this.providerCompanyName = providerCompanyName;
+    }
+
+    public String getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(String bookingId) {
+        this.bookingId = bookingId;
     }
 }

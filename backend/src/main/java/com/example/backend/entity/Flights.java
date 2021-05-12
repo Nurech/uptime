@@ -53,10 +53,13 @@ public class Flights extends ServerInfo {
     private String providerFlightEnd;
 
     @Column(name = "provider_company_id")
+    private String providerCompanyId;
+
+    @Column(name = "provider_company_name")
     private String providerCompanyName;
 
     @Column(name = "booking_id")
-    private String provider_company_name;
+    private String bookingId;
 
     public long getRowId() {
         return rowId;
@@ -174,6 +177,14 @@ public class Flights extends ServerInfo {
         this.providerFlightEnd = providerFlightEnd;
     }
 
+    public String getProviderCompanyId() {
+        return providerCompanyId;
+    }
+
+    public void setProviderCompanyId(String providerCompanyId) {
+        this.providerCompanyId = providerCompanyId;
+    }
+
     public String getProviderCompanyName() {
         return providerCompanyName;
     }
@@ -182,11 +193,11 @@ public class Flights extends ServerInfo {
         this.providerCompanyName = providerCompanyName;
     }
 
-    public String getProvider_company_name() {
-        return provider_company_name;
+    public String getBookingId() {
+        return bookingId;
     }
 
-    public void setProvider_company_name(String provider_company_name) {
-        this.provider_company_name = provider_company_name;
+    public void setBookingId(String bookingId) {
+        this.bookingId = bookingId;
     }
 }

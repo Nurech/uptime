@@ -19,10 +19,10 @@ import java.util.stream.Collectors;
 
 import static java.nio.file.Files.writeString;
 
-public class ConvertJsonDataToSql {
+public class JsonToSql {
 
     //SQLizer API key
-    private static String API_KEY = "4ejggYADZS1VtkAgNQnz0TZp8r8AKjq3LowSUqjBIERJMvo3khCkc9DqXzmSWDnB1Co6WwtctjxR7bgxgkzUNA";
+    private static String API_KEY = "Fsjit28Qf8Sh5AE0Q8arxAK9T2EN8kZtNoezDC6wUSfxw6kRy701RAKbcZgGQ8itwM8Yhgw8cZ8buaw";
     // URL to download JSON from
     private static String jsonUrl = "https://cosmos-odyssey.azurewebsites.net/api/v1.0/TravelPrices";
     // where to save downloaded SQL
@@ -100,7 +100,7 @@ public class ConvertJsonDataToSql {
 
         HttpResponse<String> resultssss = client.send(getResult, HttpResponse.BodyHandlers.ofString());
         System.out.println(resultssss.body());
-        Thread.sleep(2000);
+        Thread.sleep(3000);
 
         // do PUT to convert uploaded JSON into SQL
         Map<String, String> putParameters = new HashMap<>();
@@ -129,7 +129,7 @@ public class ConvertJsonDataToSql {
         while (!status.equals("Complete")) {
 
             HttpRequest checkStatus = HttpRequest.newBuilder()
-                    .timeout(Duration.ofSeconds(60))
+                    .timeout(Duration.ofSeconds(15))
                     .uri(URI.create("https://sqlizer.io/api/files/" + id))
                     .setHeader("Authorization", "Bearer " + API_KEY)
                     .setHeader("Content-Type", "application/x-www-form-urlencoded")
@@ -138,7 +138,7 @@ public class ConvertJsonDataToSql {
 
             HttpResponse<String> statusResponse = client.send(checkStatus, HttpResponse.BodyHandlers.ofString());
             System.out.println(statusResponse.body());
-            Thread.sleep(500);
+            Thread.sleep(100);
             String statusRemoveBraces = statusResponse.body().replace("{", "").replace("}", "");
             String resultUrlRemoveBraces = statusResponse.body().replace("{", "").replace("}", "");
 

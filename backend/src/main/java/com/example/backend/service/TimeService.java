@@ -1,7 +1,7 @@
 package com.example.backend.service;
 
 import com.example.backend.controller.BackendController;
-import com.example.backend.scheduler.ConvertJsonDataToSql;
+import com.example.backend.scheduler.JsonToSql;
 import lombok.SneakyThrows;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
@@ -52,7 +52,7 @@ public class TimeService {
         } catch (Exception e) {
             LOG.info("Latest info check error. No JSON file. Going to download and update.");
         } finally {
-            new ConvertJsonDataToSql();
+            new JsonToSql();
         }
         //TODO make this better
         return "Error. No JSON file. Can't download.";
@@ -80,7 +80,7 @@ public class TimeService {
             LOG.info("Latest info check error. No JSON file. Going to download and update.");
         }
         // download JSON
-        new ConvertJsonDataToSql().getJsonGetSql();
+        new JsonToSql().getJsonGetSql();
         //TODO make this better
         String jsonFileToString = Files.readString(Path.of("backend/src/main/resources/downloads/original.json"));
         String fullTime = jsonFileToString.substring(59, 78);
