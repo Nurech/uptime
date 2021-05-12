@@ -30,6 +30,11 @@ uptime (Maven project)
 │ └── pom.xml
 └── pom.xml (parent POM managing both modules)
 ```
+### db structure
+```
+Update loop for fresh API 
+1.
+```
 
 ### db structure
 ```
@@ -60,14 +65,14 @@ db
 5. Use https://jsonlint.com/, to validate JSON and analyze paylod
 6. Use https://sqlizer.io/ to consume API JSON into initial table
 7. Looks like 14 routes, make liquibase schema
-8. Create deployment enviorment on AWS Elastic Beanstalk, set roles and permissions
+8. Create deployment environment on AWS Elastic Beanstalk, set roles, ports and permissions
 9. Create database-2 Postgres on AWS RDS
 10. Download JSON from API as String 
     https://www.codejava.net/java-se/networking/use-httpurlconnection-to-download-file-from-an-http-url
-11. Use Jacksin @JSON annotations to deserialize, https://www.jsonschema2pojo.org/
-12. Upload to SQLizer API and use response to get SQL dialect
-13. Reformat SQL script abit, update databse (pretty stupid, but quite proud of this)
-    (in hindsight I could just use hibernate for this but I already did the script,
+11. Use Jackson @JSON annotations to deserialize, https://www.jsonschema2pojo.org/
+12. Upload API JSON to SQLizer API and use response to get SQL dialect
+13. Reformat SQL script a bit, update database (pretty stupid, but quite proud of this)
+    (in hindsight I could just use hibernate for this, but I already did the script,
     so I'm leaving this in for now) ↓ 
 ```
 

@@ -30,7 +30,11 @@ public class ConvertJsonDataToSql {
 
     public void getJsonGetSql() throws IOException, InterruptedException {
 
+
         // download original JSON from API
+        // sleep a bit because new data can ariive a bit later
+        //TODO GET status, wait for new data, add try/catch
+        Thread.sleep(5000);
         String json = downloadJson(jsonUrl);
 
         // re-format original JSON
@@ -164,7 +168,7 @@ public class ConvertJsonDataToSql {
 
     }
 
-    private static String downloadJson(String jsonUrl) {
+    public static String downloadJson(String jsonUrl) {
 
         // download original JSON
         String json = null;
@@ -192,7 +196,6 @@ public class ConvertJsonDataToSql {
             ex.printStackTrace();
         }
         System.out.println("{\"Status\":\"JSON Downloaded\"} " + json.substring(1, 87) + "...");
-
         return json;
     }
 

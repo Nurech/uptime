@@ -16,6 +16,15 @@ public class AllData {
     private double providerPrice;
     private String providerFlightStart;
     private String providerFlightEnd;
+    private String bookingId;
+
+    public String getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(String bookingId) {
+        this.bookingId = bookingId;
+    }
 
     public long getRowId() {
         return rowId;

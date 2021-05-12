@@ -3,6 +3,7 @@ package com.example.backend.service;
 import com.example.backend.controller.BackendController;
 import com.example.backend.entity.Flights;
 import com.example.backend.model.AllData;
+import com.example.backend.repository.BookingsRepository;
 import com.example.backend.repository.FlightsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,8 @@ public class FlightService {
 
     @Autowired
     private FlightsRepository flightsRepository;
+    @Autowired
+    private BookingsRepository bookingsRepository;
 
     public List<AllData> getLatestApiInfo() {
 
@@ -60,6 +63,7 @@ public class FlightService {
     }
 
     public List<AllData> getLatest15FlightApiInfo() {
+
 
         // order by row id get latest record
         String latestApiId = (flightsRepository.findTopByOrderByRowIdDesc().getId());
