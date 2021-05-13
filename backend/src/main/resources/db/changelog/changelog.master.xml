@@ -29,10 +29,11 @@
             <column name="booking_id" type="text"/>
         </createTable>
         <createTable tableName="bookings">
-            <column name="user_id" type="text">
+            <column name="user_id_nr" type="serial" autoIncrement="true">
                 <constraints primaryKey="true" unique="true"/>
             </column>
             <column name="booking_id" type="text"/>
+            <column name="api_id" type="text"/>
             <column name="first_name" type="text"/>
             <column name="last_name" type="text"/>
         </createTable>

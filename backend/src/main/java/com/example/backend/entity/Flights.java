@@ -9,7 +9,7 @@ import javax.persistence.*;
 public class Flights extends ServerInfo {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "row_id")
     private long rowId;
 

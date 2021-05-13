@@ -2,17 +2,15 @@ package com.example.backend.controller;
 
 
 import com.example.backend.model.AllData;
-import com.example.backend.repository.FlightsRepository;
+import com.example.backend.model.Booking;
+import com.example.backend.service.BookingService;
 import com.example.backend.service.FlightService;
-import com.example.backend.service.TimeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,15 +23,31 @@ public class BackendController {
     @Autowired
     private FlightService flightService;
     @Autowired
-    private TimeService timeService;
-    @Autowired
-    private FlightsRepository flightsRepository;
+    private BookingService bookingService;
+
 
     @CrossOrigin
     @ResponseBody
+    @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
     @GetMapping(path = "/serverinfo")
     public List<AllData> getAllFlights() {
         return flightService.getLatestApiInfo();
+    }
+
+    @CrossOrigin
+    @ResponseBody
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @GetMapping(path = "/bookings")
+    public List<Booking> getLatestBookings() {
+        return bookingService.getLatestookings();
+    }
+
+    @CrossOrigin
+    @ResponseBody
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping(path = "/savebooking")
+    public void getLatestBookings(Booking booking) {
+        bookingService.saveBooking(booking);
     }
 
 }

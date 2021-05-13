@@ -2,40 +2,67 @@ package com.example.backend.model;
 
 public class Booking {
 
-    private long rowId;
-    private String id;
-    private String validUntil;
-    private String legsId;
 
-    public long getRowId() {
-        return rowId;
+    private long userIdNr;
+    private String bookingId;
+    private String apiId;
+    private String firstName;
+    private String lastName;
+    private Boolean isValidPrice;
+
+    public Boolean getIsValid() {
+        return isValidPrice;
     }
 
-    public void setRowId(long rowId) {
-        this.rowId = rowId;
+    public void setIsValid(Boolean isValid) {
+        this.isValidPrice = isValid;
     }
 
-    public String getId() {
-        return id;
+    public long getUserIdNr() {
+        return userIdNr;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUserIdNr(long userIdNr) {
+        this.userIdNr = userIdNr;
     }
 
-    public String getValidUntil() {
-        return validUntil;
+    public Boolean getValidPrice() {
+        return isValidPrice;
     }
 
-    public void setValidUntil(String validUntil) {
-        this.validUntil = validUntil;
+    public void setValidPrice(Boolean validPrice) {
+        isValidPrice = validPrice;
     }
 
-    public String getLegsId() {
-        return legsId;
+    public String getBookingId() {
+        return bookingId;
     }
 
-    public void setLegsId(String legsId) {
-        this.legsId = legsId;
+    public void setBookingId(String bookingId) {
+        this.bookingId = bookingId;
+    }
+
+    public String getApiId() {
+        return apiId;
+    }
+
+    public void setApiId(String apiId) {
+        this.apiId = apiId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

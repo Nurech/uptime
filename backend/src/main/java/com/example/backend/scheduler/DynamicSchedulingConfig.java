@@ -3,6 +3,7 @@ package com.example.backend.scheduler;
 import com.example.backend.controller.BackendController;
 import com.example.backend.service.FlightService;
 import com.example.backend.service.TimeService;
+import lombok.SneakyThrows;
 import org.joda.time.LocalTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,17 +30,17 @@ public class DynamicSchedulingConfig implements SchedulingConfigurer {
 
     @Autowired
     private TimeService timeService;
-
     @Autowired
     private FlightService flightService;
-
     @Bean
     public Executor taskExecutor() {
         return Executors.newSingleThreadScheduledExecutor();
     }
 
     @Override
+    @SneakyThrows
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
+
         taskRegistrar.setScheduler(taskExecutor());
         taskRegistrar.addTriggerTask(
 
@@ -47,8 +48,8 @@ public class DynamicSchedulingConfig implements SchedulingConfigurer {
                 new Runnable() {
                     @Override
                     public void run() {
+                        FlightService.downloadJson();
                         flightService.saveJsonToDatabase();
-                        UpdateDatabase.updateDatabase();
                     }
                 },
 

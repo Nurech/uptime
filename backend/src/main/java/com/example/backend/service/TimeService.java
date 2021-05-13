@@ -1,7 +1,6 @@
 package com.example.backend.service;
 
 import com.example.backend.controller.BackendController;
-import com.example.backend.scheduler.JsonToSql;
 import lombok.SneakyThrows;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
@@ -13,8 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -43,27 +40,14 @@ public class TimeService {
     @SneakyThrows
     @ResponseBody
     public String latestValidUntil() {
-        try {
-            // get latest valid until hour from latest API JSON
-            String jsonFileToString = Files.readString(Path.of("backend/src/main/resources/downloads/original.json"));
-            // target T03:51:35
-            String time = jsonFileToString.substring(70, 78);
-            return time;
-        } catch (Exception e) {
-            LOG.info("Latest info check error. No JSON file. Going to download and update.");
-        } finally {
-            new JsonToSql();
-        }
-        //TODO make this better
-        return "Error. No JSON file. Can't download.";
+        String latestValid = FlightService.downloadJson().substring(58,86);
+        return latestValid;
     }
 
     @SneakyThrows
     @ResponseBody
     public String getUpdateDatabaseYear() {
-        String jsonFileToString = Files.readString(Path.of("backend/src/main/resources/downloads/original.json"));
-        // target is latest: 03:51:35.0934365Z
-        String year = jsonFileToString.substring(59, 68);
+        String year = FlightService.downloadJson().substring(59, 68);
         return year;
     }
 
@@ -72,18 +56,16 @@ public class TimeService {
     public String getApiUpdateTime() {
         try {
             // get latest valid until hour from latest API JSON
-            String jsonFileToString = Files.readString(Path.of("backend/src/main/resources/downloads/original.json"));
-            // target T03:51:35
-            String fullTime = jsonFileToString.substring(59, 78);
+            String fullTime = FlightService.downloadJson().substring(59, 78);
             return fullTime;
         } catch (Exception e) {
-            LOG.info("Latest info check error. No JSON file. Going to download and update.");
+            LOG.info("Latest info check error. Maybe API is down?");
+        } finally {
+            LOG.info("{OK}");
         }
         // download JSON
-        new JsonToSql().getJsonGetSql();
         //TODO make this better
-        String jsonFileToString = Files.readString(Path.of("backend/src/main/resources/downloads/original.json"));
-        String fullTime = jsonFileToString.substring(59, 78);
+        String fullTime = FlightService.downloadJson().substring(59, 78);
         return fullTime;
     }
 

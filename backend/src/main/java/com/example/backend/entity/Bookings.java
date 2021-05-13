@@ -9,52 +9,60 @@ import javax.persistence.*;
 public class Bookings extends ServerInfo {
 
     @Id
-    @Column(name = "user_id")
-    private long rowId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id_nr")
+    private long userIdNr;
 
     @Column(name = "booking_id")
-    private String id;
+    private String bookingId;
+
+    @Column(name = "api_id")
+    private String apiId;
 
     @Column(name = "first_name")
-    private String validUntil;
+    private String firstName;
 
     @Column(name = "last_name")
-    private String legsId;
+    private String lastName;
 
-    public long getRowId() {
-        return rowId;
+    public long getUserIdNr() {
+        return userIdNr;
     }
 
-    public void setRowId(long rowId) {
-        this.rowId = rowId;
+    public void setUserIdNr(long userIdNr) {
+        this.userIdNr = userIdNr;
     }
 
-    @Override
-    public String getId() {
-        return id;
+    public String getBookingId() {
+        return bookingId;
     }
 
-    @Override
-    public void setId(String id) {
-        this.id = id;
+    public void setBookingId(String bookingId) {
+        this.bookingId = bookingId;
     }
 
-    @Override
-    public String getValidUntil() {
-        return validUntil;
+    public String getApiId() {
+        return apiId;
     }
 
-    @Override
-    public void setValidUntil(String validUntil) {
-        this.validUntil = validUntil;
+    public void setApiId(String apiId) {
+        this.apiId = apiId;
     }
 
-    public String getLegsId() {
-        return legsId;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setLegsId(String legsId) {
-        this.legsId = legsId;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }
 

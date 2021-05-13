@@ -17,9 +17,5 @@ public interface FlightsRepository extends JpaRepository<Flights, String> {
 
     List<Flights> findAllByOrderByIdDesc(Pageable pageable);
 
-    // get latest 15 API ID's
-//    Flights findAllById();
-
-
 }
 
