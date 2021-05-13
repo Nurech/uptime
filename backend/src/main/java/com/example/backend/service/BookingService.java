@@ -2,6 +2,7 @@ package com.example.backend.service;
 
 import com.example.backend.controller.BackendController;
 import com.example.backend.entity.Bookings;
+import com.example.backend.entity.Flights;
 import com.example.backend.model.Booking;
 import com.example.backend.repository.BookingsRepository;
 import com.example.backend.repository.FlightsRepository;
@@ -30,15 +31,22 @@ public class BookingService {
 
         LOG.info("GET latest bookings data");
 
+        // TODO
+        // should use Set to retain order, get last 15 only
+        List<Flights> lastApiList = flightsRepository.findAll();
+        LOG.info("Last API list size is: " + lastApiList.size());
+
+
         long lastRow = bookingsRepository.findTopByOrderByUserIdNrDesc().getUserIdNr();
         List<Bookings> bookingEntity = bookingsRepository.findAll();
         LOG.info("Found booking records. List size is: " + bookingEntity.size());
 
+
         // where to save all latest results
         List<Booking> bookingDataList = new ArrayList<>();
 
-        // find last 30 records
-        for (int i = (int) (lastRow - 30); i < lastRow; i++) {
+        // find last 10 records
+        for (int i = (int) (lastRow - 10); i < lastRow; i++) {
 
             // create obj in loop
             Booking bookingData = new Booking();
@@ -48,9 +56,21 @@ public class BookingService {
             bookingData.setFirstName(bookingEntity.get(i).getFirstName());
             bookingData.setLastName(bookingEntity.get(i).getLastName());
             bookingData.setApiId(bookingEntity.get(i).getApiId());
+            bookingData.setIsValidPrice("false");
+
+            // if booking is in last 15 api list then price is valid (booking expires after 15 API refreshes)
+            for (int j = 0; j < lastApiList.size(); j++) {
+                if (bookingEntity.get(i).getApiId().equals(lastApiList.get(j).getId())) {
+                    LOG.info(bookingData.getApiId());
+                    LOG.info(lastApiList.get(j).getId());
+                    bookingData.setIsValidPrice("true");
+                }
+            }
 
             bookingDataList.add(bookingData);
         }
+
+        // return last 10 bookings
         return bookingDataList;
     }
 

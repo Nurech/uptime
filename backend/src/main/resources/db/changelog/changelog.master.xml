@@ -8,7 +8,7 @@
 
     <changeSet id="01-05-2021 create initial tables" author="Joosep">
         <createTable tableName="flights">
-            <column name="row_id" type="serial" autoIncrement="true">
+            <column name="row_id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" unique="true"/>
             </column>
             <column name="id" type="text"/>

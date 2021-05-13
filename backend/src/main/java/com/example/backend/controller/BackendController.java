@@ -28,7 +28,7 @@ public class BackendController {
 
     @CrossOrigin
     @ResponseBody
-    @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @GetMapping(path = "/serverinfo")
     public List<AllData> getAllFlights() {
         return flightService.getLatestApiInfo();
@@ -46,7 +46,7 @@ public class BackendController {
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "/savebooking")
-    public void getLatestBookings(Booking booking) {
+    public void getLatestBookings(@RequestBody Booking booking) {
         bookingService.saveBooking(booking);
     }
 

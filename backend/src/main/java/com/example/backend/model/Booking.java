@@ -2,21 +2,12 @@ package com.example.backend.model;
 
 public class Booking {
 
-
     private long userIdNr;
     private String bookingId;
     private String apiId;
     private String firstName;
     private String lastName;
-    private Boolean isValidPrice;
-
-    public Boolean getIsValid() {
-        return isValidPrice;
-    }
-
-    public void setIsValid(Boolean isValid) {
-        this.isValidPrice = isValid;
-    }
+    private String isValidPrice;
 
     public long getUserIdNr() {
         return userIdNr;
@@ -24,14 +15,6 @@ public class Booking {
 
     public void setUserIdNr(long userIdNr) {
         this.userIdNr = userIdNr;
-    }
-
-    public Boolean getValidPrice() {
-        return isValidPrice;
-    }
-
-    public void setValidPrice(Boolean validPrice) {
-        isValidPrice = validPrice;
     }
 
     public String getBookingId() {
@@ -64,5 +47,13 @@ public class Booking {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getIsValidPrice() {
+        return isValidPrice;
+    }
+
+    public void setIsValidPrice(String isValidPrice) {
+        this.isValidPrice = isValidPrice;
     }
 }

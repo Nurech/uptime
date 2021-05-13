@@ -37,24 +37,8 @@ Update loop for fresh API
 ```
 
 ### db structure
-```
-db
-├──┬ flights
-│  ├── rowId
-│  ├── id
-│  ├── validUntil
-│  ├── legsId
-│  ├── routeId
-│  ├── routeFromId
-│  ├── routeFromName
-│  ├── routeToId
-│  ├── routeToName
-│  ├── routeDistance
-│  ├── providerId
-│  ├── providerPrice
-│  ├── providerFlightStart
-│  ├── providerFlightEnd
 
+![](images/img_3.png)
 
 ### what I did
 ```
@@ -70,19 +54,12 @@ db
 10. Download JSON from API as String 
     https://www.codejava.net/java-se/networking/use-httpurlconnection-to-download-file-from-an-http-url
 11. Use Jackson @JSON annotations to deserialize, https://www.jsonschema2pojo.org/
-12. Upload API JSON to SQLizer API and use response to get SQL dialect
-13. Reformat SQL script a bit, update database (pretty stupid, but quite proud of this)
-    (in hindsight I could just use hibernate for this, but I already did the script,
-    so I'm leaving this in for now) ↓ 
-```
-
-![](images/img.png)
-
-```
+12. Persist JSON data to db
+13. 
 14. Read how long data is valid, fetch new data after refresh using Spring @Scheduled
 15. Add use hibernate repository-service-controller models frontend->backend->db
 16. Scratch Vue3 frontend, switch back to Vue2 (node issues and Typescript...)
-17. Add vuetify frontend to display data
+17. Add vuetify frontend to display data, some broilerplate included 
 18. Add components, entity, dao and service logic for bookings
 19. Add user_bookings table, show last 100 bookings in graph UI to encourage others to book
 20. To save last 15 API details add table flights_history where all API detailer are going to be retained

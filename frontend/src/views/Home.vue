@@ -1,15 +1,33 @@
 <template>
   <div id="app">
     <v-app>
-      <template>
-
-      </template>
       <v-content class="container align-center px-1">
         <h2 class="font-weight-light mb-2"> COSMOS ODYSSEY </h2>
         <p>Solar System Travel Deals</p>
 
-        <v-chip class="ma-2" color="primary" x-small label text-color="white">API ID: {{ items }}</v-chip>
-        <v-chip class="ma-2" color="primary" x-small label text-color="white">Price list valid until:</v-chip>
+        <v-chip class="ma-2" color="primary" x-small label text-color="white">API ID: {{ items[0].id }}</v-chip>
+
+        <v-chip class="ma-2" color="primary" x-small label text-color="white">
+          Price list valid until: {{ items[0].validUntil | moment("MM-DD-yyyy HH:mm") }}
+        </v-chip>
+
+        <v-chip class="ma-2" color="primary" x-small label text-color="white">
+          Current server time: {{ new Date() | moment("MM-DD-yyyy HH:mm") }}
+        </v-chip>
+
+        <v-chip class="ma-2" color="primary" x-small label text-color="white">
+          <countdown :end-time="items[0].validUntil">
+            <template
+                v-slot:process="anyYouWantedScopName">
+              <span>{{ `Next update in: ${anyYouWantedScopName.timeObj.ceil.s} seconds` }}</span>
+            </template>
+            <template
+                v-slot:finish>
+              <span>Done!</span>
+            </template>
+          </countdown>
+        </v-chip>
+
 
         <v-card>
           <v-card-title>
@@ -28,12 +46,12 @@
             </div>
           </v-card-title>
 
-
           <v-data-table :headers="showHeaders"
                         dense
                         hover
-                        :items="items" mobile-breakpoint="800"
-                        class="elevation-1"
+                        :items="items"
+                        mobile-breakpoint="800"
+                        class="elevation-3"
                         inline
                         :loading="loadTable"
                         loading-text="Loading... Please wait"
@@ -45,115 +63,79 @@
               </v-chip>
             </template>
 
-            <v-snackbar v-model="snackbar">{{ snackText }}
-              <template v-slot:action="{ attrs }">
-                <v-btn
-                    color="pink"
-                    text
-                    v-bind="attrs"
-                    @click="snackbar = false">
-                  Close
-                </v-btn>
-              </template>
-            </v-snackbar>
-
-            <!--            crud operations-->
             <template v-slot:item.actions="{ item }">
               <div class="text-truncate">
-                <v-btn
-                    small
-                    class="mr-2"
-                    @click="showEditDialog(item)"
-                    color="primary"
-                >
-                  Book this
-                  <v-icon
-                      dark
-                      right>
-                    mdi-checkbox-marked-circle
-                  </v-icon>
+                <v-btn small
+                       class="mr-2"
+                       @click="showEditDialog(item)"
+                       color="success">BOOK THIS
                 </v-btn>
               </div>
             </template>
           </v-data-table>
 
-          <!-- this dialog is used for both create and update -->
           <v-dialog v-model="dialog" max-width="500px">
-            <template v-slot:activator="{ on }">
-              <div class="d-flex">
-                <v-btn color="primary" dark class="ml-auto ma-3" v-on="on">
-                  New
-                  <v-icon small>mdi-plus-circle-outline</v-icon>
-                </v-btn>
-              </div>
-            </template>
             <v-card>
               <v-card-title>
-                <span>Make a booking {{items.id}}</span>
+                <span>Booking a flight</span>
               </v-card-title>
               <v-card-text>
                 <v-row>
                   <v-col cols="12" sm="6">
-                    <v-text-field v-model="booking.firstName" label="First Name"></v-text-field>
+                    <v-text-field v-model="firstName" label="First Name"></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6">
-                    <v-text-field v-model="booking.lastName" label="Last Name"></v-text-field>
+                    <v-text-field v-model="lastName" label="Last Name"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <v-text-field
+                        :value="travelTime"
+                        label="Travel time is" disabled></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <v-text-field :value="editedItem.providerPrice+'$'" label="Travel price is" disabled></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="12">
-
+                    <v-text-field :value="generatedId" label="Booking ID" disabled></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="12">
+                    <v-text-field :value="editedItem.id" label="Flight ID" disabled></v-text-field>
                   </v-col>
                 </v-row>
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn class="error" @click="showEditDialog()">Cancel</v-btn>
-                <v-btn class="primary" @click="saveBooking()">Save</v-btn>
+                <v-btn class="error" text @click="showEditDialog()">Cancel</v-btn>
+                <v-btn class="primary" text @click="saveItem(editedItem)">Save</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
         </v-card>
 
         <v-divider></v-divider>
-
-        <v-subheader>Last 30 bookings</v-subheader>
+        <v-subheader>Last 10 bookings</v-subheader>
         <template>
           <v-simple-table dense
-                          hover
-                          :booking="bookings"
-                          :loading="loadTable"
-                          loading-text="Loading... Please wait"class="elevation-1">
+                          :loading="loadTable1"
+                          loading-text="Loading... Please wait">
             <template v-slot:default>
+
               <thead>
               <tr>
-                <th class="text-left">
-                  User ID
-                </th>
-                <th class="text-left">
-                  Booking ID
-                </th>
-                <th class="text-left">
-                  API ID
-                </th>
-                <th class="text-left">
-                  First Name
-                </th>
-                <th class="text-left">
-                  Last Name
-                </th>
-                <th class="text-left">
-                  Is in last 15 price list
-                </th>
+                <th class="text-left">First Name</th>
+                <th class="text-left">Last Name</th>
+                <th class="text-left">On valid price list?</th>
+                <th class="text-left">Booking ID</th>
+                <th class="text-left">API ID</th>
               </tr>
               </thead>
               <tbody>
-              <tr v-for="booking in bookings"
-                  :key="booking.userIdNr">
-                <td>{{ booking.userIdNr }}</td>
-                <td>{{ booking.bookingId }}</td>
-                <td>{{ booking.apiId }}</td>
-                <td>{{ booking.firstName }}</td>
-                <td>{{ booking.lastName }}</td>
-                <td>{{ booking.isValidPrice }}</td>
+              <tr v-for="item in bookings.slice().reverse()" :key="item.name">
+                <td>{{ item.firstName }}</td>
+                <td>{{ item.lastName }}</td>
+                <td>{{ item.isValidPrice }}</td>
+                <td>{{ item.bookingId }}</td>
+                <td>{{ item.apiId }}</td>
               </tr>
               </tbody>
             </template>
@@ -166,8 +148,9 @@
 </template>
 
 <script>
-import {get, post} from "axios";
-
+import axios, {get, post} from "axios";
+import {uuid} from 'vue-uuid';
+import moment from 'moment'
 
 const apiToken = "keyZIIVNiQPvozEWb"
 const airTableApp = "appXJzFFs2zgj4X5C"
@@ -177,6 +160,9 @@ export default {
   name: "Home",
   data() {
     return {
+      uuid: uuid.v1(),
+      v1: this.$uuid.v1(),
+      v4: this.$uuid.v4(),
       headers: [
         {text: 'Action', value: 'actions', sortable: false},
         {text: 'Route From Name', value: 'routeFromName'},
@@ -199,17 +185,25 @@ export default {
         providerCompanyName: {text: 'Provider Name', value: 'providerCompanyName'}
       },
       booking: {},
-
-      items: [],
+      travelTime: '',
+      updateApiTime: '',
       bookings: [],
+      bookingForm: {},
+      editedItem: {},
+      generatedId: '',
+      items: [],
+      serverTime: '',
       selectedHeaders: [],
       dialog: false,
       loadTable: true,
+      loadTable1: true,
       search: '',
       snackbar: false,
       snackText: `Booked you on flight!`,
       routeTime: '',
-      bookingUuid: this._uid,
+      timer: '',
+
+      bookingIdGenerated: this.bookingIdGenerated,
 
       selectedValue1: '',
       selectedValue2: '',
@@ -258,23 +252,59 @@ export default {
     }
   },
 
+
   computed: {
     //Done to get the ordered headers
     showHeaders() {
       return this.headers.filter(s => this.selectedHeaders.includes(s));
-    }
+    },
+    travelTime(){
+      var a = moment(this.editedItem.providerFlightStart,'HH:mm');
+      var b = moment(this.editedItem.providerFlightEnd,'HH:mm');
+      this.travelTime = b.diff(a, 'minutes');
+      return diffMinutes;
+    },
   },
+
 
   created() {
     this.headers = Object.values(this.headersMap);
     this.selectedHeaders = this.headers;
+    this.fetchEventsList();
+    this.timer = setInterval(this.fetchEventsList, 30000);
   },
 
   mounted() {
-    this.loadItems()
+    this.loadItems(),
+        this.loadBookings(),
+        this.bookingIdGenerated = uuid.v1
   },
 
   methods: {
+
+
+    showEditDialog(item) {
+      this.editedItem = item || {}
+      this.dialog = !this.dialog
+      this.generatedId = this.$uuid.v4();
+    },
+
+    fetchEventsList() {
+      this.$http.get('api/bookings', (events) => {
+        this.list = events;
+      }).bind(this);
+      this.$http.get('api/serverinfo', (events) => {
+        this.list = events;
+      }).bind(this);
+    },
+
+    cancelAutoUpdate() {
+      clearInterval(this.timer);
+    },
+
+    beforeDestroy() {
+      this.cancelAutoUpdate();
+    },
 
     filterFrom(value, search, item) {
       return value != null && search != null &&
@@ -286,11 +316,6 @@ export default {
       if (price > 2500000) return 'red'
       else if (price > 100000) return 'orange'
       else return 'green'
-    },
-
-    showEditDialog(item) {
-      this.saveBooking = item || {}
-      this.dialog = !this.dialog
     },
 
     loadItems() {
@@ -323,25 +348,47 @@ export default {
       })
     },
 
-    saveBooking() {
-      post('api/savebooking',{
-        bookingId: this.bookingId
-      })
-          .then((response) => {
-            this.loadTable = true;
-            this.saveBookingResponse = response.data;
-          }).catch((error) => {
-        console.log(error)
+
+    saveItem(item) {
+      let method = "post"
+      let url = `api/savebooking`
+      let id = item.id
+      let data = {
+        apiId: item.id,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        bookingId: this.generatedId
+      }
+      // save the booking
+      axios[method](url,
+          data,
+          {
+            headers: {
+              Authorization: "Bearer " + apiToken,
+              "Content-Type": "application/json"
+            }
+          }).then((response) => {
+        if (response.data && response.data.id) {
+          console.log(response.data)
+          // add new item to state
+          this.editedItem.id = response.data.id
+          if (!id) {
+            // add the new item to items state
+            this.items.push(this.editedItem)
+          }
+          this.editedItem = {}
+        }
+        this.dialog = !this.dialog
       })
     },
 
     loadBookings() {
       get('api/bookings')
           .then((response) => {
-            this.loadTable = false;
+            this.loadTable1 = false;
             this.bookings = response.data.map((item) => {
               return {
-                userIdNr: item.userIdNr,
+                userId: item.userId,
                 bookingId: item.bookingId,
                 apiId: item.apiId,
                 firstName: item.firstName,

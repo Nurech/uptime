@@ -4,7 +4,6 @@ import com.example.backend.controller.BackendController;
 import com.example.backend.entity.Flights;
 import com.example.backend.model.AllData;
 import com.example.backend.model.Flight;
-import com.example.backend.repository.BookingsRepository;
 import com.example.backend.repository.FlightsRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
@@ -12,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -35,8 +35,6 @@ public class FlightService {
 
     @Autowired
     private FlightsRepository flightsRepository;
-    @Autowired
-    private BookingsRepository bookingsRepository;
 
     public List<AllData> getLatestApiInfo() {
         LOG.info("GET all flights data");
@@ -77,6 +75,8 @@ public class FlightService {
     }
 
     @SneakyThrows
+    // deadman solution to run this only once at startup
+    @Scheduled(initialDelay = 1000 * 30, fixedDelay=Long.MAX_VALUE)
     public void saveJsonToDatabase() {
 
         // get data
@@ -96,7 +96,6 @@ public class FlightService {
 
                 while ((parent < parentsTotal) && (child < childsTotal) || (atObject < totalObjects)) {
                     Flights flight = new Flights();
-                    flight.setId(rawJsonData.getId());
 
                     flight.setId(rawJsonData.getId());
                     flight.setValidUntil(rawJsonData.getValidUntil());
