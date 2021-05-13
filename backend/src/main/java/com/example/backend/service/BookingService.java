@@ -27,7 +27,7 @@ public class BookingService {
     @Autowired
     private BookingsRepository bookingsRepository;
 
-    public List<Booking> getLatestookings() {
+    public List<Booking> getLatestBookings() {
 
         LOG.info("GET latest bookings data");
 

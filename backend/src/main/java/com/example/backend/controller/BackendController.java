@@ -39,7 +39,7 @@ public class BackendController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     @GetMapping(path = "/bookings")
     public List<Booking> getLatestBookings() {
-        return bookingService.getLatestookings();
+        return bookingService.getLatestBookings();
     }
 
     @CrossOrigin
