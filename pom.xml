@@ -26,14 +26,6 @@
         <build-plugin.jacoco.version>0.8.6</build-plugin.jacoco.version>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.github.eirslett</groupId>
-            <artifactId>frontend-maven-plugin</artifactId>
-            <version>1.11.3</version>
-        </dependency>
-    </dependencies>
-
     <modules>
         <module>frontend</module>
         <module>backend</module>
@@ -67,5 +59,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

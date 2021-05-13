@@ -31,8 +31,7 @@ public class BookingService {
 
         LOG.info("GET latest bookings data");
 
-        // TODO
-        // should use Set to retain order, get last 15 only
+        // TODO use Set to avoid dupes or better query
         List<Flights> lastApiList = flightsRepository.findAll();
         LOG.info("Last API list size is: " + lastApiList.size());
 
