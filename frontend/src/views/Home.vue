@@ -89,7 +89,7 @@
                   </v-col>
                   <v-col cols="12" sm="6">
                     <v-text-field
-                        :value="travelTime"
+                        :value="Math.floor((new Date(editedItem.providerFlightStart) - new Date(editedItem.providerFlightEnd)) / (1000*60*-1))+' minutes'"
                         label="Travel time is" disabled></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6">
@@ -258,9 +258,9 @@ export default {
     showHeaders() {
       return this.headers.filter(s => this.selectedHeaders.includes(s));
     },
-    travelTime(){
-      var a = moment(this.editedItem.providerFlightStart,'HH:mm');
-      var b = moment(this.editedItem.providerFlightEnd,'HH:mm');
+    travelTime() {
+      var a = moment(this.editedItem.providerFlightStart, 'HH:mm');
+      var b = moment(this.editedItem.providerFlightEnd, 'HH:mm');
       this.travelTime = b.diff(a, 'minutes');
       return diffMinutes;
     },

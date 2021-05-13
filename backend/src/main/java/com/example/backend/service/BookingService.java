@@ -61,12 +61,9 @@ public class BookingService {
             // if booking is in last 15 api list then price is valid (booking expires after 15 API refreshes)
             for (int j = 0; j < lastApiList.size(); j++) {
                 if (bookingEntity.get(i).getApiId().equals(lastApiList.get(j).getId())) {
-                    LOG.info(bookingData.getApiId());
-                    LOG.info(lastApiList.get(j).getId());
                     bookingData.setIsValidPrice("true");
                 }
             }
-
             bookingDataList.add(bookingData);
         }
 
