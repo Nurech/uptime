@@ -54,8 +54,7 @@
                         class="elevation-3"
                         inline
                         :loading="loadTable"
-                        loading-text="Loading... Please wait"
-          >
+                        loading-text="Loading... Please wait">
 
             <template v-slot:item.providerPrice="{ item }">
               <v-chip :color="getColor(item.providerPrice)"
@@ -83,10 +82,7 @@
 
                   <v-row>
                     <v-col cols="12" sm="6">
-                      <validation-observer
-                          ref="observer"
-                          v-slot="{ invalid }"
-                      >
+                      <validation-observer ref="observer" v-slot="{ invalid }">
 
                         <validation-provider v-slot="{ errors }" name="First Name" rules="required|max:10">
                           <v-text-field v-model="firstName"
@@ -101,11 +97,7 @@
                     <v-col cols="12" sm="6">
                       <validation-observer ref="observer" v-slot="{ invalid }">
                         <validation-provider v-slot="{ errors }" name="Last Name" rules="required|max:10">
-                          <v-text-field v-model="lastName"
-                                        :counter="10"
-                                        :error-messages="errors"
-                                        label="Name"
-                                        required></v-text-field>
+                          <v-text-field v-model="lastName" :counter="10" :error-messages="errors" label="Name" required></v-text-field>
                         </validation-provider>
                       </validation-observer>
                     </v-col>
@@ -136,13 +128,7 @@
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-chip class="ma-2" color="alert" x-small label text-color="white">Not saving empty fields</v-chip>
-
-                  <v-btn
-                      class="mr-4"
-                      type="submit"
-                      :disabled="invalid"
-                      @click="saveItem(editedItem);clear"
-                  >
+                  <v-btn class="mr-4" type="submit" :disabled="invalid" @click="saveItem(editedItem); clear">
                     submit
                   </v-btn>
                 </v-card-actions>
@@ -156,7 +142,7 @@
         <v-divider></v-divider>
         <v-subheader>Last 10 bookings</v-subheader>
         <template>
-          <v-simple-table dense :loading="loadTable1" loading-text="Loading... Please wait">
+          <v-simple-table :sort-desc.sync="sortDesc" dense :loading="loadTable1" loading-text="Loading... Please wait">
             <template v-slot:default>
               <thead>
               <tr>
@@ -190,7 +176,6 @@
 import axios, {get, post} from "axios";
 import {uuid} from 'vue-uuid';
 import moment from 'moment'
-
 const apiToken = "keyZIIVNiQPvozEWb"
 const airTableApp = "appXJzFFs2zgj4X5C"
 const airTableName = "Example"
@@ -221,9 +206,6 @@ export default {
   },
   data() {
     return {
-      uuid: uuid.v1(),
-      v1: this.$uuid.v1(),
-      v4: this.$uuid.v4(),
       headers: [
         {text: 'Action', value: 'actions', sortable: false},
         {text: 'Route From Name', value: 'routeFromName'},
@@ -245,6 +227,7 @@ export default {
         providerFlightEnd: {text: 'Arrives (date)', value: 'providerFlightEnd'},
         providerCompanyName: {text: 'Provider Name', value: 'providerCompanyName'}
       },
+
       booking: {},
       travelTime: '',
       updateApiTime: '',
@@ -264,11 +247,14 @@ export default {
       firstName: '',
       lastName: '',
       select: null,
-
       bookingIdGenerated: this.bookingIdGenerated,
-
       selectedValue1: '',
       selectedValue2: '',
+      sortDesc: true,
+      uuid: uuid.v1(),
+      v1: this.$uuid.v1(),
+      v4: this.$uuid.v4(),
+
       // All the options that could be rendered.
       // Selected value from Select1 must exist as a key in the options array
       options: {
@@ -319,6 +305,7 @@ export default {
     showHeaders() {
       return this.headers.filter(s => this.selectedHeaders.includes(s));
     },
+
     clear() {
       this.firstName = ''
       this.lastName = ''
@@ -339,6 +326,15 @@ export default {
 
   methods: {
 
+    toggleOrder() {
+      this.sortDesc = !this.sortDesc
+    },
+
+    nextSort() {
+      let index = this.headers.findIndex(h => h.value === this.sortBy)
+      index = (index + 1) % this.headers.length
+      this.sortBy = this.headers[index].value
+    },
 
     showEditDialog(item) {
       this.editedItem = item || {}
@@ -361,7 +357,7 @@ export default {
     },
 
     getColor(price) {
-      if (price > 2500000) return 'red'
+      if (price > 2200000) return 'red'
       else if (price > 100000) return 'orange'
       else return 'green'
     },
