@@ -65,7 +65,6 @@
                 item.providerFlightEnd | moment("MM-DD-yyyy HH:mm")
               }}
             </template>
-
             <template v-slot:item.providerFlightStart="{ item }">
               {{ item.providerFlightStart | moment("MM-DD-yyyy HH:mm") }}
             </template>
@@ -140,8 +139,8 @@
           </v-dialog>
         </v-card>
 
-        <v-divider></v-divider>
 
+        <v-divider></v-divider>
         <v-subheader>Last 10 bookings</v-subheader>
         <template>
           <v-simple-table dense :loading="loadTable1" loading-text="Loading... Please wait">
@@ -156,7 +155,6 @@
               </tr>
               </thead>
               <tbody>
-
               <tr v-for="item in bookings.slice()" :key="item.name">
                 <td>{{ item.firstName }}</td>
                 <td>{{ item.lastName }}</td>
