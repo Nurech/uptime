@@ -11,13 +11,12 @@ import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "id",
-    "routeInfo",
-    "providers"
+        "id",
+        "routeInfo",
+        "providers"
 })
 @Generated("jsonschema2pojo")
-public class Leg implements Serializable
-{
+public class Leg implements Serializable {
 
     @JsonProperty("id")
     private String id;
@@ -31,13 +30,11 @@ public class Leg implements Serializable
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Leg() {
     }
 
     /**
-     * 
      * @param id
      * @param routeInfo
      * @param providers

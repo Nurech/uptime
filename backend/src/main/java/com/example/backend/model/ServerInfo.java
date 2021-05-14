@@ -1,12 +1,12 @@
 package com.example.backend.model;
 
 public class ServerInfo {
+
     private String id;
     private String validUntil;
     private String serverTime;
     private String updateTime;
     private long nextUpdate;
-
 
     public long getNextUpdate() {
         return nextUpdate;

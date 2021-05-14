@@ -10,12 +10,11 @@ import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "id",
-    "name"
+        "id",
+        "name"
 })
 @Generated("jsonschema2pojo")
-public class Company implements Serializable
-{
+public class Company implements Serializable {
 
     @JsonProperty("id")
     private String id;
@@ -27,13 +26,11 @@ public class Company implements Serializable
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Company() {
     }
 
     /**
-     * 
      * @param name
      * @param id
      */

@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -40,7 +39,7 @@ public class TimeService {
     @SneakyThrows
     @ResponseBody
     public String latestValidUntil() {
-        String latestValid = FlightService.downloadJson().substring(58,86);
+        String latestValid = FlightService.downloadJson().substring(58, 86);
         return latestValid;
     }
 
@@ -68,7 +67,6 @@ public class TimeService {
         String fullTime = FlightService.downloadJson().substring(59, 78);
         return fullTime;
     }
-
 
     @ResponseBody
     @SneakyThrows

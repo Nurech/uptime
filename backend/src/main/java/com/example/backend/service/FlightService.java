@@ -76,7 +76,7 @@ public class FlightService {
 
     @SneakyThrows
     // deadman solution to run this only once at startup to get fresh data when testing on local
-    @Scheduled(initialDelay = 1000 * 30, fixedDelay=Long.MAX_VALUE)
+    @Scheduled(initialDelay = 1000 * 30, fixedDelay = Long.MAX_VALUE)
     public void saveJsonToDatabase() {
 
         // get data
@@ -94,42 +94,42 @@ public class FlightService {
 
         LOG.info(("{Updating database} parentsTotal: " + parentsTotal + " childsTotal: " + childsTotal + "}"));
 
-                while ((parent < parentsTotal) && (child < childsTotal) || (atObject < totalObjects)) {
-                    Flights flight = new Flights();
+        while ((parent < parentsTotal) && (child < childsTotal) || (atObject < totalObjects)) {
+            Flights flight = new Flights();
 
-                    flight.setId(rawJsonData.getId());
-                    flight.setValidUntil(rawJsonData.getValidUntil());
-                    flight.setLegsId(rawJsonData.getLegs().get(parent).getId());
-                    flight.setRouteId(rawJsonData.getLegs().get(parent).getRouteInfo().getId());
-                    flight.setRouteFromId(rawJsonData.getLegs().get(parent).getRouteInfo().getFrom().getId());
-                    flight.setRouteFromName(rawJsonData.getLegs().get(parent).getRouteInfo().getFrom().getName());
-                    flight.setRouteToId(rawJsonData.getLegs().get(parent).getRouteInfo().getTo().getId());
-                    flight.setRouteToName(rawJsonData.getLegs().get(parent).getRouteInfo().getTo().getName());
-                    flight.setRouteDistance(rawJsonData.getLegs().get(parent).getRouteInfo().getDistance());
-                    flight.setProviderId(rawJsonData.getLegs().get(parent).getProviders().get(child).getId());
-                    flight.setProviderPrice(rawJsonData.getLegs().get(parent).getProviders().get(child).getPrice());
-                    flight.setProviderFlightStart(rawJsonData.getLegs().get(parent).getProviders().get(child).getFlightStart());
-                    flight.setProviderFlightEnd(rawJsonData.getLegs().get(parent).getProviders().get(child).getFlightEnd());
-                    flight.setProviderCompanyId(rawJsonData.getLegs().get(parent).getProviders().get(child).getCompany().getId());
-                    flight.setProviderCompanyName(rawJsonData.getLegs().get(parent).getProviders().get(child).getCompany().getName());
-                    flightsRepository.save(flight);
+            flight.setId(rawJsonData.getId());
+            flight.setValidUntil(rawJsonData.getValidUntil());
+            flight.setLegsId(rawJsonData.getLegs().get(parent).getId());
+            flight.setRouteId(rawJsonData.getLegs().get(parent).getRouteInfo().getId());
+            flight.setRouteFromId(rawJsonData.getLegs().get(parent).getRouteInfo().getFrom().getId());
+            flight.setRouteFromName(rawJsonData.getLegs().get(parent).getRouteInfo().getFrom().getName());
+            flight.setRouteToId(rawJsonData.getLegs().get(parent).getRouteInfo().getTo().getId());
+            flight.setRouteToName(rawJsonData.getLegs().get(parent).getRouteInfo().getTo().getName());
+            flight.setRouteDistance(rawJsonData.getLegs().get(parent).getRouteInfo().getDistance());
+            flight.setProviderId(rawJsonData.getLegs().get(parent).getProviders().get(child).getId());
+            flight.setProviderPrice(rawJsonData.getLegs().get(parent).getProviders().get(child).getPrice());
+            flight.setProviderFlightStart(rawJsonData.getLegs().get(parent).getProviders().get(child).getFlightStart());
+            flight.setProviderFlightEnd(rawJsonData.getLegs().get(parent).getProviders().get(child).getFlightEnd());
+            flight.setProviderCompanyId(rawJsonData.getLegs().get(parent).getProviders().get(child).getCompany().getId());
+            flight.setProviderCompanyName(rawJsonData.getLegs().get(parent).getProviders().get(child).getCompany().getName());
+            flightsRepository.save(flight);
 
-                    child++;
-                    atObject++;
+            child++;
+            atObject++;
 
-                    if (child == childsTotal) {
-                        child = 0;
-                        if (parent < parentsTotal) {
-                            // how many children next parent has?
-                            parent++;
-                            childsTotal = (rawJsonData.getLegs().get(parent).getProviders().size());
-                        }
-                    }
+            if (child == childsTotal) {
+                child = 0;
+                if (parent < parentsTotal) {
+                    // how many children next parent has?
+                    parent++;
+                    childsTotal = (rawJsonData.getLegs().get(parent).getProviders().size());
                 }
+            }
+        }
         LOG.info("{Saved JSON to db}");
     }
 
-@SneakyThrows
+    @SneakyThrows
     public static String downloadJson() {
 
         String jsonUrl = "https://cosmos-odyssey.azurewebsites.net/api/v1.0/TravelPrices";
@@ -160,8 +160,8 @@ public class FlightService {
             ex.printStackTrace();
         }
         LOG.info("{\"Status\":\"JSON Downloaded\"} " + json.substring(1, 44) + "...");
-    return json;
-}
+        return json;
+    }
 
     private static String streamToString(InputStream inputStream) {
         String text = new Scanner(inputStream, StandardCharsets.UTF_8).useDelimiter("\\Z").next();

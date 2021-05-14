@@ -29,8 +29,6 @@ public class BookingService {
     @Autowired
     private BookingsRepository bookingsRepository;
 
-
-
     @SneakyThrows
     public List<Booking> getLatestBookings() {
 
@@ -40,15 +38,15 @@ public class BookingService {
         List<Flights> allInfo = flightsRepository.findAll();
 
         // go over all list
-            for (int i = 0; i < allInfo.size()-1; i++) {
+        for (int i = 0; i < allInfo.size() - 1; i++) {
 
-                // if next is not previous add to list
-                if (!allInfo.get(i).equals(allInfo.get(i + 1))) {
-                    Flight flight = new Flight();
-                    flight.setId(allInfo.get(i).getId());
-                    lastApiList.add(flight);
-                }
+            // if next is not previous add to list
+            if (!allInfo.get(i).equals(allInfo.get(i + 1))) {
+                Flight flight = new Flight();
+                flight.setId(allInfo.get(i).getId());
+                lastApiList.add(flight);
             }
+        }
 
 
         LOG.info("Last API list size is: " + lastApiList.size());

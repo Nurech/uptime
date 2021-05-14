@@ -56,11 +56,19 @@
                         loading-text="Loading... Please wait">
 
             <template v-slot:item.providerPrice="{ item }">
-              <v-chip :color="getColor(item.providerPrice)" text-color="black" small label class="mr-2"> {{ item.providerPrice+'$'}}</v-chip>
+              <v-chip :color="getColor(item.providerPrice)" text-color="black" small label class="mr-2">
+                {{ item.providerPrice + '$' }}
+              </v-chip>
             </template>
 
-            <template v-slot:item.providerFlightEnd="{ item }">{{ item.providerFlightEnd | moment("MM-DD-yyyy HH:mm") }}</template>
-            <template v-slot:item.providerFlightStart="{ item }">{{ item.providerFlightStart | moment("MM-DD-yyyy HH:mm") }}</template>
+            <template v-slot:item.providerFlightEnd="{ item }">{{
+                item.providerFlightEnd | moment("MM-DD-yyyy HH:mm")
+              }}
+            </template>
+
+            <template v-slot:item.providerFlightStart="{ item }">
+              {{ item.providerFlightStart | moment("MM-DD-yyyy HH:mm") }}
+            </template>
 
             <template v-slot:item.actions="{ item }">
               <div class="text-truncate">
@@ -79,60 +87,64 @@
               <v-card-title><span>Booking a flight</span></v-card-title>
 
               <validation-observer ref="observer" v-slot="{ invalid }">
-              <form @submit.prevent="submit">
-                <v-card-text>
+                <form @submit.prevent="submit">
+                  <v-card-text>
 
-                  <v-row>
-                    <v-col cols="12" sm="6">
+                    <v-row>
+                      <v-col cols="12" sm="6">
                         <validation-provider v-slot="{ errors }" name="First Name" rules="required|max:10">
-                          <v-text-field v-model="firstName" :counter="10" :error-messages="errors" label="First Name" required></v-text-field>
+                          <v-text-field v-model="firstName" :counter="10" :error-messages="errors" label="First Name"
+                                        required></v-text-field>
                         </validation-provider>
-                    </v-col>
+                      </v-col>
 
-                    <v-col cols="12" sm="6">
+                      <v-col cols="12" sm="6">
                         <validation-provider v-slot="{ errors }" name="Last Name" rules="required|max:10">
-                          <v-text-field v-model="lastName" :counter="10" :error-messages="errors" label="Last Name" required></v-text-field>
+                          <v-text-field v-model="lastName" :counter="10" :error-messages="errors" label="Last Name"
+                                        required></v-text-field>
                         </validation-provider>
-                    </v-col>
+                      </v-col>
 
-                    <v-col cols="12" sm="6">
-                      <v-text-field
-                          :value="Math.floor((new Date(editedItem.providerFlightStart) - new Date(editedItem.providerFlightEnd)) / (1000*60*-1))+' minutes'"
-                          label="Travel time is" disabled></v-text-field>
-                    </v-col>
+                      <v-col cols="12" sm="6">
+                        <v-text-field
+                            :value="Math.floor((new Date(editedItem.providerFlightStart) - new Date(editedItem.providerFlightEnd)) / (1000*60*-1))+' minutes'"
+                            label="Travel time is" disabled></v-text-field>
+                      </v-col>
 
-                    <v-col cols="12" sm="6">
-                      <v-text-field :value="editedItem.providerPrice+'$'" label="Travel price is"
-                                    disabled></v-text-field>
-                    </v-col>
+                      <v-col cols="12" sm="6">
+                        <v-text-field :value="editedItem.providerPrice+'$'" label="Travel price is"
+                                      disabled></v-text-field>
+                      </v-col>
 
-                    <v-col cols="12" sm="12">
-                      <v-text-field :value="generatedId" label="Booking ID" disabled></v-text-field>
-                    </v-col>
+                      <v-col cols="12" sm="12">
+                        <v-text-field :value="generatedId" label="Booking ID" disabled></v-text-field>
+                      </v-col>
 
-                    <v-col cols="12" sm="12">
-                      <v-text-field :value="editedItem.id" label="Flight ID" disabled></v-text-field>
-                    </v-col>
+                      <v-col cols="12" sm="12">
+                        <v-text-field :value="editedItem.id" label="Flight ID" disabled></v-text-field>
+                      </v-col>
 
-                  </v-row>
-                </v-card-text>
+                    </v-row>
+                  </v-card-text>
 
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-chip class="ma-2" color="alert" x-small label text-color="black">Not saving empty fields</v-chip>
-                  <v-btn class="mr-4" type="submit" text-color="black" :disabled="invalid" @click="saveItem(editedItem); clear">submit</v-btn>
-                </v-card-actions>
-              </form>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-chip class="ma-2" color="alert" x-small label text-color="black">Not saving empty fields</v-chip>
+                    <v-btn class="mr-4" type="submit" text-color="black" :disabled="invalid"
+                           @click="saveItem(editedItem); clear">submit
+                    </v-btn>
+                  </v-card-actions>
+                </form>
               </validation-observer>
             </v-card>
           </v-dialog>
         </v-card>
 
-
         <v-divider></v-divider>
+
         <v-subheader>Last 10 bookings</v-subheader>
         <template>
-          <v-simple-table  dense :loading="loadTable1" loading-text="Loading... Please wait">
+          <v-simple-table dense :loading="loadTable1" loading-text="Loading... Please wait">
             <template>
               <thead>
               <tr>
@@ -144,11 +156,14 @@
               </tr>
               </thead>
               <tbody>
+
               <tr v-for="item in bookings.slice()" :key="item.name">
-                <td >{{ item.firstName }}</td>
+                <td>{{ item.firstName }}</td>
                 <td>{{ item.lastName }}</td>
                 <td>
-                  <v-chip :color="getColorValid(item.isValidPrice)" small label class="mr-2" text-color="black"> {{ item.isValidPrice }}</v-chip>
+                  <v-chip :color="getColorValid(item.isValidPrice)" small label class="mr-2" text-color="black">
+                    {{ item.isValidPrice }}
+                  </v-chip>
                 </td>
                 <td>{{ item.bookingId }}</td>
                 <td>{{ item.apiId }}</td>
@@ -166,8 +181,10 @@
 <script>
 import axios, {get, post} from "axios";
 import {uuid} from 'vue-uuid';
+
 const compiler = require('vue-template-compiler')
 import moment from 'moment'
+
 const apiToken = "keyZIIVNiQPvozEWb"
 const airTableApp = "appXJzFFs2zgj4X5C"
 const airTableName = "Example"

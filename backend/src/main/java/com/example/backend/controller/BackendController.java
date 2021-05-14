@@ -25,7 +25,6 @@ public class BackendController {
     @Autowired
     private BookingService bookingService;
 
-
     @CrossOrigin
     @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)

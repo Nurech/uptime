@@ -32,6 +32,7 @@ public class DynamicSchedulingConfig implements SchedulingConfigurer {
     private TimeService timeService;
     @Autowired
     private FlightService flightService;
+
     @Bean
     public Executor taskExecutor() {
         return Executors.newSingleThreadScheduledExecutor();
