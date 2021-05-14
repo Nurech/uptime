@@ -78,53 +78,73 @@
             <v-card>
 
               <v-card-title><span>Booking a flight</span></v-card-title>
-              <v-card-text>
-
-                <v-row>
-                  <v-col cols="12" sm="6">
-                    <validation-observer ref="observer" v-slot="{ invalid }">
-                      <validation-provider v-slot="{ errors }" name="First Name" rules="required|max:10">
-                        <v-text-field v-model="firstName" :counter="10" :error-messages="errors" label="First Name"
-                                      required></v-text-field>
-                      </validation-provider>
-                    </validation-observer>
-                  </v-col>
-
-                  <v-col cols="12" sm="6">
-                    <validation-observer ref="observer" v-slot="{ invalid }">
-                      <validation-provider v-slot="{ errors }" name="Last Name" rules="required|max:10">
-                        <v-text-field v-model="lastName" :counter="10" :error-messages="errors" label="Last Name"
-                                      required></v-text-field>
-                      </validation-provider>
-                    </validation-observer>
-                  </v-col>
-
-                  <v-col cols="12" sm="6">
-                    <v-text-field
-                        :value="Math.floor((new Date(editedItem.providerFlightStart) - new Date(editedItem.providerFlightEnd)) / (1000*60*-1))+' minutes'"
-                        label="Travel time is" disabled></v-text-field>
-                  </v-col>
-
-                  <v-col cols="12" sm="6">
-                    <v-text-field :value="editedItem.providerPrice+'$'" label="Travel price is" disabled></v-text-field>
-                  </v-col>
-
-                  <v-col cols="12" sm="12">
-                    <v-text-field :value="generatedId" label="Booking ID" disabled></v-text-field>
-                  </v-col>
-
-                  <v-col cols="12" sm="12">
-                    <v-text-field :value="editedItem.id" label="Flight ID" disabled></v-text-field>
-                  </v-col>
-
-                </v-row>
-              </v-card-text>
-
               <form @submit.prevent="submit">
+                <v-card-text>
+
+                  <v-row>
+                    <v-col cols="12" sm="6">
+                      <validation-observer
+                          ref="observer"
+                          v-slot="{ invalid }"
+                      >
+
+                        <validation-provider v-slot="{ errors }" name="First Name" rules="required|max:10">
+                          <v-text-field v-model="firstName"
+                                        :counter="10"
+                                        :error-messages="errors"
+                                        label="Name"
+                                        required></v-text-field>
+                        </validation-provider>
+                      </validation-observer>
+                    </v-col>
+
+                    <v-col cols="12" sm="6">
+                      <validation-observer ref="observer" v-slot="{ invalid }">
+                        <validation-provider v-slot="{ errors }" name="Last Name" rules="required|max:10">
+                          <v-text-field v-model="lastName"
+                                        :counter="10"
+                                        :error-messages="errors"
+                                        label="Name"
+                                        required></v-text-field>
+                        </validation-provider>
+                      </validation-observer>
+                    </v-col>
+
+                    <v-col cols="12" sm="6">
+                      <v-text-field
+                          :value="Math.floor((new Date(editedItem.providerFlightStart) - new Date(editedItem.providerFlightEnd)) / (1000*60*-1))+' minutes'"
+                          label="Travel time is" disabled></v-text-field>
+                    </v-col>
+
+                    <v-col cols="12" sm="6">
+                      <v-text-field :value="editedItem.providerPrice+'$'" label="Travel price is"
+                                    disabled></v-text-field>
+                    </v-col>
+
+                    <v-col cols="12" sm="12">
+                      <v-text-field :value="generatedId" label="Booking ID" disabled></v-text-field>
+                    </v-col>
+
+                    <v-col cols="12" sm="12">
+                      <v-text-field :value="editedItem.id" label="Flight ID" disabled></v-text-field>
+                    </v-col>
+
+                  </v-row>
+                </v-card-text>
+
+
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-chip class="ma-2" color="alert" x-small label text-color="white">Not saving empty fields</v-chip> <v-btn class="error" text @click="showEditDialog()">Cancel</v-btn>
-                  <v-btn class="mr-4" type="submit" :disabled="invalid" @click="saveItem.editedItem">Save</v-btn>
+                  <v-chip class="ma-2" color="alert" x-small label text-color="white">Not saving empty fields</v-chip>
+
+                  <v-btn
+                      class="mr-4"
+                      type="submit"
+                      :disabled="invalid"
+                      @click="saveItem(editedItem);clear"
+                  >
+                    submit
+                  </v-btn>
                 </v-card-actions>
               </form>
 
@@ -318,7 +338,6 @@ export default {
   },
 
   methods: {
-
 
 
     showEditDialog(item) {
