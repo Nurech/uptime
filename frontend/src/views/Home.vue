@@ -142,7 +142,7 @@
         <v-divider></v-divider>
         <v-subheader>Last 10 bookings</v-subheader>
         <template>
-          <v-simple-table :sort-desc.sync="sortDesc" dense :loading="loadTable1" loading-text="Loading... Please wait">
+          <v-simple-table :sort-desc="[true]" dense :loading="loadTable1" loading-text="Loading... Please wait">
             <template v-slot:default>
               <thead>
               <tr>
