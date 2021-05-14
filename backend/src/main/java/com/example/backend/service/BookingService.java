@@ -39,8 +39,6 @@ public class BookingService {
         List<Flight> lastApiList = new ArrayList<>();
         List<Flights> allInfo = flightsRepository.findAll();
 
-
-
         // go over all list
             for (int i = 0; i < allInfo.size()-1; i++) {
 
@@ -54,9 +52,6 @@ public class BookingService {
 
 
         LOG.info("Last API list size is: " + lastApiList.size());
-
-
-
         List<Bookings> bookingEntity = bookingsRepository.findAllWhereNotNull();
         LOG.info("Found booking records. List size is: " + bookingEntity.size());
 
@@ -68,7 +63,6 @@ public class BookingService {
 
             // create obj in loop
             Booking bookingData = new Booking();
-
             bookingData.setUserIdNr(bookingEntity.get(i).getUserIdNr());
             bookingData.setBookingId(bookingEntity.get(i).getBookingId());
             bookingData.setFirstName(bookingEntity.get(i).getFirstName());
@@ -84,7 +78,6 @@ public class BookingService {
             }
             bookingDataList.add(bookingData);
         }
-
         // return last 10 bookings
         return bookingDataList;
     }
@@ -100,5 +93,4 @@ public class BookingService {
         bookingsRepository.save(bookingEntity);
 
     }
-
 }
