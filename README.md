@@ -7,7 +7,7 @@ Assignment: https://smallpdf.com/result#r=106d0db12b1fdcb0e563bafc6b42d56d&t=sha
 Deployed: http://cosmosodyssey-env.eba-xae9f38t.us-east-2.elasticbeanstalk.com/
 
 ![](images/img_2.png)
-
+![](images/img_4.png)
 
 ## How to use
 ```

@@ -1,7 +1,11 @@
 // webpack.config.js
 
+// webpack.config.js
+const { VueLoaderPlugin } = require('vue-loader')
+
 module.exports = {
     module: {
+
         rules: [
             {
                 test: /\.s(c|a)ss$/,
@@ -26,5 +30,10 @@ module.exports = {
                 ],
             },
         ],
-    }
+    },
+
+    plugins: [
+        // make sure to include the plugin!
+        new VueLoaderPlugin()
+    ]
 }
