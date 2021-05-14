@@ -77,7 +77,7 @@ public class TimeService {
         // Z stands for timezone is Zulu (UTC)
         // 2021-05-09T06:21:43.183977Z
         // my time is 3 hours behind from API server
-        DateTime startDate = DateTime.now().minusHours(3);
+        DateTime startDate = DateTime.now();
 
         String dateTime = getApiUpdateTime();
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss");

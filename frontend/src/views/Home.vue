@@ -57,17 +57,18 @@
                         loading-text="Loading... Please wait">
 
             <template v-slot:item.providerPrice="{ item }">
-              <v-chip :color="getColor(item.providerPrice)"
-                      dark> {{ item.providerPrice }}
-              </v-chip>
+              <v-chip :color="getColor(item.providerPrice)" text-color="black" small label class="mr-2"> {{ item.providerPrice+'$'}}</v-chip>
             </template>
+
+            <template v-slot:item.providerFlightEnd="{ item }">{{ item.providerFlightEnd | moment("MM-DD-yyyy HH:mm") }}</template>
+            <template v-slot:item.providerFlightStart="{ item }">{{ item.providerFlightStart | moment("MM-DD-yyyy HH:mm") }}</template>
 
             <template v-slot:item.actions="{ item }">
               <div class="text-truncate">
-                <v-btn small
+                <v-btn small label
                        class="mr-2"
                        @click="showEditDialog(item)"
-                       color="success">BOOK THIS
+                       color="primary">BOOK THIS
                 </v-btn>
               </div>
             </template>
@@ -137,7 +138,7 @@
         <v-subheader>Last 10 bookings</v-subheader>
         <template>
           <v-simple-table  dense :loading="loadTable1" loading-text="Loading... Please wait">
-            <template v-slot:default>
+            <template>
               <thead>
               <tr>
                 <th class="text-left">First Name</th>
@@ -149,10 +150,12 @@
               </thead>
 
               <tbody>
-              <tr v-for="item in bookings.slice().reverse()" :key="item.name">
+              <tr v-for="item in bookings.slice()" :key="item.name">
                 <td >{{ item.firstName }}</td>
                 <td>{{ item.lastName }}</td>
-                <td>{{ item.isValidPrice }}</td>
+                <td>
+                  <v-chip :color="getColorValid(item.isValidPrice)" small label class="mr-2" text-color="black"> {{ item.isValidPrice }}</v-chip>
+                </td>
                 <td>{{ item.bookingId }}</td>
                 <td>{{ item.apiId }}</td>
               </tr>
@@ -215,7 +218,7 @@ export default {
       headersMap: {
         action: {text: 'Action', value: 'actions', sortable: false},
         routeFromName: {text: 'From', value: 'routeFromName'},
-        routeToName: {text: 'Where', value: 'routeToName'},
+        routeToName: {text: 'To here', value: 'routeToName'},
         routeDistance: {text: 'Distance (km)', value: 'routeDistance'},
         providerPrice: {text: 'Price ($)', value: 'providerPrice'},
         providerFlightStart: {text: 'Leaves (date)', value: 'providerFlightStart'},
@@ -352,8 +355,13 @@ export default {
     },
 
     getColor(price) {
-      if (price > 2200000) return 'red'
+      if (price > 2200000) return 'deep-orange lighten-1'
       else if (price > 100000) return 'orange'
+      else return 'green'
+    },
+
+    getColorValid(string) {
+      if (string > false) return 'deep-orange lighten-1'
       else return 'green'
     },
 
