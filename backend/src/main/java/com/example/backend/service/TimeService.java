@@ -96,5 +96,4 @@ public class TimeService {
         LOG.info("GET called on getUpdateTimeDifference");
         return nextUpdate;
     }
-
 }

@@ -75,7 +75,7 @@ public class FlightService {
     }
 
     @SneakyThrows
-    // deadman solution to run this only once at startup
+    // deadman solution to run this only once at startup to get fresh data when testing on local
     @Scheduled(initialDelay = 1000 * 30, fixedDelay=Long.MAX_VALUE)
     public void saveJsonToDatabase() {
 
@@ -119,7 +119,6 @@ public class FlightService {
 
                     if (child == childsTotal) {
                         child = 0;
-
                         if (parent < parentsTotal) {
                             // how many children next parent has?
                             parent++;
