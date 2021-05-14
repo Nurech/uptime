@@ -1,4 +1,3 @@
-// webpack.config.js
 
 // webpack.config.js
 const { VueLoaderPlugin } = require('vue-loader')

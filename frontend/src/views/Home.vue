@@ -28,7 +28,6 @@
           </countdown>
         </v-chip>
 
-
         <v-card>
           <v-card-title>
             All Flights
@@ -84,8 +83,6 @@
                 <v-card-text>
 
                   <v-row>
-
-
                     <v-col cols="12" sm="6">
                         <validation-provider v-slot="{ errors }" name="First Name" rules="required|max:10">
                           <v-text-field v-model="firstName" :counter="10" :error-messages="errors" label="First Name" required></v-text-field>
@@ -97,8 +94,6 @@
                           <v-text-field v-model="lastName" :counter="10" :error-messages="errors" label="Last Name" required></v-text-field>
                         </validation-provider>
                     </v-col>
-
-
 
                     <v-col cols="12" sm="6">
                       <v-text-field
@@ -148,7 +143,6 @@
                 <th class="text-left">API ID</th>
               </tr>
               </thead>
-
               <tbody>
               <tr v-for="item in bookings.slice()" :key="item.name">
                 <td >{{ item.firstName }}</td>
@@ -394,7 +388,6 @@ export default {
         console.log(error)
       })
     },
-
 
     saveItem(item) {
       let method = "post"
