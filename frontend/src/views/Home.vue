@@ -76,50 +76,68 @@
 
           <v-dialog v-model="dialog" max-width="500px">
             <v-card>
-              <v-card-title>
-                <span>Booking a flight</span>
-              </v-card-title>
+
+              <v-card-title><span>Booking a flight</span></v-card-title>
               <v-card-text>
+
                 <v-row>
                   <v-col cols="12" sm="6">
-                    <v-text-field v-model="firstName" label="First Name"></v-text-field>
+                    <validation-observer ref="observer" v-slot="{ invalid }">
+                      <validation-provider v-slot="{ errors }" name="First Name" rules="required|max:10">
+                        <v-text-field v-model="firstName" :counter="10" :error-messages="errors" label="First Name"
+                                      required></v-text-field>
+                      </validation-provider>
+                    </validation-observer>
                   </v-col>
+
                   <v-col cols="12" sm="6">
-                    <v-text-field v-model="lastName" label="Last Name"></v-text-field>
+                    <validation-observer ref="observer" v-slot="{ invalid }">
+                      <validation-provider v-slot="{ errors }" name="Last Name" rules="required|max:10">
+                        <v-text-field v-model="lastName" :counter="10" :error-messages="errors" label="Last Name"
+                                      required></v-text-field>
+                      </validation-provider>
+                    </validation-observer>
                   </v-col>
+
                   <v-col cols="12" sm="6">
                     <v-text-field
                         :value="Math.floor((new Date(editedItem.providerFlightStart) - new Date(editedItem.providerFlightEnd)) / (1000*60*-1))+' minutes'"
                         label="Travel time is" disabled></v-text-field>
                   </v-col>
+
                   <v-col cols="12" sm="6">
                     <v-text-field :value="editedItem.providerPrice+'$'" label="Travel price is" disabled></v-text-field>
                   </v-col>
+
                   <v-col cols="12" sm="12">
                     <v-text-field :value="generatedId" label="Booking ID" disabled></v-text-field>
                   </v-col>
+
                   <v-col cols="12" sm="12">
                     <v-text-field :value="editedItem.id" label="Flight ID" disabled></v-text-field>
                   </v-col>
+
                 </v-row>
               </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn class="error" text @click="showEditDialog()">Cancel</v-btn>
-                <v-btn class="primary" text @click="saveItem(editedItem)">Save</v-btn>
-              </v-card-actions>
+
+              <form @submit.prevent="submit">
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-chip class="ma-2" color="alert" x-small label text-color="white">Not saving empty fields</v-chip> <v-btn class="error" text @click="showEditDialog()">Cancel</v-btn>
+                  <v-btn class="mr-4" type="submit" :disabled="invalid" @click="saveItem.editedItem">Save</v-btn>
+                </v-card-actions>
+              </form>
+
             </v-card>
           </v-dialog>
         </v-card>
 
+
         <v-divider></v-divider>
         <v-subheader>Last 10 bookings</v-subheader>
         <template>
-          <v-simple-table dense
-                          :loading="loadTable1"
-                          loading-text="Loading... Please wait">
+          <v-simple-table dense :loading="loadTable1" loading-text="Loading... Please wait">
             <template v-slot:default>
-
               <thead>
               <tr>
                 <th class="text-left">First Name</th>
@@ -129,6 +147,7 @@
                 <th class="text-left">API ID</th>
               </tr>
               </thead>
+
               <tbody>
               <tr v-for="item in bookings.slice().reverse()" :key="item.name">
                 <td>{{ item.firstName }}</td>
@@ -138,10 +157,10 @@
                 <td>{{ item.apiId }}</td>
               </tr>
               </tbody>
+
             </template>
           </v-simple-table>
         </template>
-
       </v-content>
     </v-app>
   </div>
@@ -155,9 +174,31 @@ import moment from 'moment'
 const apiToken = "keyZIIVNiQPvozEWb"
 const airTableApp = "appXJzFFs2zgj4X5C"
 const airTableName = "Example"
+import {required, digits, email, max, regex} from 'vee-validate/dist/rules'
+import {extend, ValidationObserver, ValidationProvider, setInteractionMode} from 'vee-validate'
+
+setInteractionMode('eager')
+
+extend('digits', {
+  ...digits,
+  message: '{_field_} needs to be {length} digits. ({_value_})',
+})
+
+extend('required', {
+  ...required,
+  message: '{_field_} can not be empty',
+})
+
+extend('max', {
+  ...max,
+  message: '{_field_} may not be greater than {length} characters',
+})
 
 export default {
-  name: "Home",
+  components: {
+    ValidationProvider,
+    ValidationObserver,
+  },
   data() {
     return {
       uuid: uuid.v1(),
@@ -198,10 +239,11 @@ export default {
       loadTable: true,
       loadTable1: true,
       search: '',
-      snackbar: false,
-      snackText: `Booked you on flight!`,
       routeTime: '',
       timer: '',
+      firstName: '',
+      lastName: '',
+      select: null,
 
       bookingIdGenerated: this.bookingIdGenerated,
 
@@ -252,26 +294,21 @@ export default {
     }
   },
 
-
   computed: {
     //Done to get the ordered headers
     showHeaders() {
       return this.headers.filter(s => this.selectedHeaders.includes(s));
     },
-    travelTime() {
-      var a = moment(this.editedItem.providerFlightStart, 'HH:mm');
-      var b = moment(this.editedItem.providerFlightEnd, 'HH:mm');
-      this.travelTime = b.diff(a, 'minutes');
-      return diffMinutes;
+    clear() {
+      this.firstName = ''
+      this.lastName = ''
+      this.$refs.observer.reset()
     },
   },
-
 
   created() {
     this.headers = Object.values(this.headersMap);
     this.selectedHeaders = this.headers;
-    this.fetchEventsList();
-    this.timer = setInterval(this.fetchEventsList, 30000);
   },
 
   mounted() {
@@ -283,19 +320,11 @@ export default {
   methods: {
 
 
+
     showEditDialog(item) {
       this.editedItem = item || {}
       this.dialog = !this.dialog
       this.generatedId = this.$uuid.v4();
-    },
-
-    fetchEventsList() {
-      this.$http.get('api/bookings', (events) => {
-        this.list = events;
-      }).bind(this);
-      this.$http.get('api/serverinfo', (events) => {
-        this.list = events;
-      }).bind(this);
     },
 
     cancelAutoUpdate() {
@@ -360,7 +389,7 @@ export default {
         bookingId: this.generatedId
       }
       // save the booking
-      axios[method](url,
+      post(url,
           data,
           {
             headers: {

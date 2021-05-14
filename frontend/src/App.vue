@@ -29,4 +29,9 @@
     }
   }
 }
+
+div[aria-required=true].v-input .v-label::after {
+  content: " *";
+  color: red;
+}
 </style>

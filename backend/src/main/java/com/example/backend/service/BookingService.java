@@ -4,8 +4,10 @@ import com.example.backend.controller.BackendController;
 import com.example.backend.entity.Bookings;
 import com.example.backend.entity.Flights;
 import com.example.backend.model.Booking;
+import com.example.backend.model.Flight;
 import com.example.backend.repository.BookingsRepository;
 import com.example.backend.repository.FlightsRepository;
+import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,25 +29,42 @@ public class BookingService {
     @Autowired
     private BookingsRepository bookingsRepository;
 
+
+
+    @SneakyThrows
     public List<Booking> getLatestBookings() {
 
         LOG.info("GET latest bookings data");
 
-        // TODO use Set to avoid dupes or better query
-        List<Flights> lastApiList = flightsRepository.findAll();
+        List<Flight> lastApiList = new ArrayList<>();
+        List<Flights> allInfo = flightsRepository.findAll();
+
+
+
+        // go over all list
+            for (int i = 0; i < allInfo.size()-1; i++) {
+
+                // if next is not previous add to list
+                if (!allInfo.get(i).equals(allInfo.get(i + 1))) {
+                    Flight flight = new Flight();
+                    flight.setId(allInfo.get(i).getId());
+                    lastApiList.add(flight);
+                }
+            }
+
+
         LOG.info("Last API list size is: " + lastApiList.size());
 
 
-        long lastRow = bookingsRepository.findTopByOrderByUserIdNrDesc().getUserIdNr();
-        List<Bookings> bookingEntity = bookingsRepository.findAll();
-        LOG.info("Found booking records. List size is: " + bookingEntity.size());
 
+        List<Bookings> bookingEntity = bookingsRepository.findAllWhereNotNull();
+        LOG.info("Found booking records. List size is: " + bookingEntity.size());
 
         // where to save all latest results
         List<Booking> bookingDataList = new ArrayList<>();
 
         // find last 10 records
-        for (int i = (int) (lastRow - 10); i < lastRow; i++) {
+        for (int i = 0; i < 10; i++) {
 
             // create obj in loop
             Booking bookingData = new Booking();
