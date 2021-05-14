@@ -14,3 +14,4 @@ module.exports = {
   outputDir: 'target/dist',
   assetsDir: 'static'
 };
+const compiler = require('vue-template-compiler')

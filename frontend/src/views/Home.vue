@@ -142,7 +142,7 @@
         <v-divider></v-divider>
         <v-subheader>Last 10 bookings</v-subheader>
         <template>
-          <v-simple-table :sort-desc="[true]" dense :loading="loadTable1" loading-text="Loading... Please wait">
+          <v-simple-table  dense :loading="loadTable1" loading-text="Loading... Please wait">
             <template v-slot:default>
               <thead>
               <tr>
@@ -156,7 +156,7 @@
 
               <tbody>
               <tr v-for="item in bookings.slice().reverse()" :key="item.name">
-                <td>{{ item.firstName }}</td>
+                <td >{{ item.firstName }}</td>
                 <td>{{ item.lastName }}</td>
                 <td>{{ item.isValidPrice }}</td>
                 <td>{{ item.bookingId }}</td>
@@ -175,6 +175,7 @@
 <script>
 import axios, {get, post} from "axios";
 import {uuid} from 'vue-uuid';
+const compiler = require('vue-template-compiler')
 import moment from 'moment'
 const apiToken = "keyZIIVNiQPvozEWb"
 const airTableApp = "appXJzFFs2zgj4X5C"
