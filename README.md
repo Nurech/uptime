@@ -4,7 +4,7 @@ Assignment: https://smallpdf.com/result#r=106d0db12b1fdcb0e563bafc6b42d56d&t=sha
 
 ![](images/img_1.png)
 
-Deployed: http://cosmos-env1.eba-d4k5v2eu.us-east-2.elasticbeanstalk.com/
+Deployed: http://cosmosodyssey-env.eba-xae9f38t.us-east-2.elasticbeanstalk.com/
 
 ![](images/img_2.png)
 
