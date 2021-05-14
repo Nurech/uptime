@@ -29,6 +29,6 @@
     "vue-cli-plugin-vuetify": "~2.4.0",
     "vue-loader": "^15.9.7",
     "vue-moment": "^4.1.0",
-    "vue-template-compiler": "^2.6.12"
+    "vue-template-compiler": "2.6.11"
   }
 }
