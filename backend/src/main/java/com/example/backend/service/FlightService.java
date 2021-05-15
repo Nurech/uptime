@@ -34,14 +34,13 @@ public class FlightService {
     private FlightsRepository flightsRepository;
 
     public List<AllData> getLatestApiInfo() {
-        LOG.info("GET all flights data");
 
         String latestApiId = (flightsRepository.lastApiId().getId());
-        LOG.info("Latest API ID is: " + latestApiId);
+        LOG.info("{Latest API ID is:} " + latestApiId);
 
         // swap data from entity to dto
         List<Flights> flightEntity = flightsRepository.findAllById(latestApiId);
-        LOG.info("Found latest records. List size is: " + flightEntity.size());
+        LOG.info("{Found latest records. List size is:} " + flightEntity.size());
 
         // where to save all latest results
         List<AllData> dataList = new ArrayList<>();
