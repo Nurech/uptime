@@ -36,7 +36,7 @@ public class FlightService {
     public List<AllData> getLatestApiInfo() {
         LOG.info("GET all flights data");
 
-        String latestApiId = (flightsRepository.findTopByOrderByRowIdDesc().getId());
+        String latestApiId = (flightsRepository.lastApiId().getId());
         LOG.info("Latest API ID is: " + latestApiId);
 
         // swap data from entity to dto
@@ -82,49 +82,55 @@ public class FlightService {
         ObjectMapper mapper = new ObjectMapper();
         Flight rawJsonData = mapper.readValue(jsonData, Flight.class);
 
-        int atObject = 0;
-        int parent = 0;
-        int child = 0;
+        // if current API ID is not most recent in db then do update
+        if (!rawJsonData.getId().equals(flightsRepository.lastApiId().getId())) {
 
-        int parentsTotal = (rawJsonData.getLegs().size() - 1);
-        int childsTotal = (rawJsonData.getLegs().get(parent).getProviders().size()) - 1;
-        int totalObjects = parentsTotal * childsTotal;
+            int atObject = 0;
+            int parent = 0;
+            int child = 0;
 
-        LOG.info(("{Updating database} parentsTotal: " + parentsTotal + " childsTotal: " + childsTotal + "}"));
+            int parentsTotal = (rawJsonData.getLegs().size() - 1);
+            int childsTotal = (rawJsonData.getLegs().get(parent).getProviders().size()) - 1;
+            int totalObjects = parentsTotal * childsTotal;
 
-        while ((parent < parentsTotal) && (child < childsTotal) || (atObject < totalObjects)) {
-            Flights flight = new Flights();
+            LOG.info(("{Updating database} parentsTotal: " + parentsTotal + " childsTotal: " + childsTotal + "}"));
 
-            flight.setId(rawJsonData.getId());
-            flight.setValidUntil(rawJsonData.getValidUntil());
-            flight.setLegsId(rawJsonData.getLegs().get(parent).getId());
-            flight.setRouteId(rawJsonData.getLegs().get(parent).getRouteInfo().getId());
-            flight.setRouteFromId(rawJsonData.getLegs().get(parent).getRouteInfo().getFrom().getId());
-            flight.setRouteFromName(rawJsonData.getLegs().get(parent).getRouteInfo().getFrom().getName());
-            flight.setRouteToId(rawJsonData.getLegs().get(parent).getRouteInfo().getTo().getId());
-            flight.setRouteToName(rawJsonData.getLegs().get(parent).getRouteInfo().getTo().getName());
-            flight.setRouteDistance(rawJsonData.getLegs().get(parent).getRouteInfo().getDistance());
-            flight.setProviderId(rawJsonData.getLegs().get(parent).getProviders().get(child).getId());
-            flight.setProviderPrice(rawJsonData.getLegs().get(parent).getProviders().get(child).getPrice());
-            flight.setProviderFlightStart(rawJsonData.getLegs().get(parent).getProviders().get(child).getFlightStart());
-            flight.setProviderFlightEnd(rawJsonData.getLegs().get(parent).getProviders().get(child).getFlightEnd());
-            flight.setProviderCompanyId(rawJsonData.getLegs().get(parent).getProviders().get(child).getCompany().getId());
-            flight.setProviderCompanyName(rawJsonData.getLegs().get(parent).getProviders().get(child).getCompany().getName());
-            flightsRepository.save(flight);
+            while ((parent < parentsTotal) && (child < childsTotal) || (atObject < totalObjects)) {
+                Flights flight = new Flights();
 
-            child++;
-            atObject++;
+                flight.setId(rawJsonData.getId());
+                flight.setValidUntil(rawJsonData.getValidUntil());
+                flight.setLegsId(rawJsonData.getLegs().get(parent).getId());
+                flight.setRouteId(rawJsonData.getLegs().get(parent).getRouteInfo().getId());
+                flight.setRouteFromId(rawJsonData.getLegs().get(parent).getRouteInfo().getFrom().getId());
+                flight.setRouteFromName(rawJsonData.getLegs().get(parent).getRouteInfo().getFrom().getName());
+                flight.setRouteToId(rawJsonData.getLegs().get(parent).getRouteInfo().getTo().getId());
+                flight.setRouteToName(rawJsonData.getLegs().get(parent).getRouteInfo().getTo().getName());
+                flight.setRouteDistance(rawJsonData.getLegs().get(parent).getRouteInfo().getDistance());
+                flight.setProviderId(rawJsonData.getLegs().get(parent).getProviders().get(child).getId());
+                flight.setProviderPrice(rawJsonData.getLegs().get(parent).getProviders().get(child).getPrice());
+                flight.setProviderFlightStart(rawJsonData.getLegs().get(parent).getProviders().get(child).getFlightStart());
+                flight.setProviderFlightEnd(rawJsonData.getLegs().get(parent).getProviders().get(child).getFlightEnd());
+                flight.setProviderCompanyId(rawJsonData.getLegs().get(parent).getProviders().get(child).getCompany().getId());
+                flight.setProviderCompanyName(rawJsonData.getLegs().get(parent).getProviders().get(child).getCompany().getName());
+                flightsRepository.save(flight);
 
-            if (child == childsTotal) {
-                child = 0;
-                if (parent < parentsTotal) {
-                    // how many children next parent has?
-                    parent++;
-                    childsTotal = (rawJsonData.getLegs().get(parent).getProviders().size());
+                child++;
+                atObject++;
+
+                if (child == childsTotal) {
+                    child = 0;
+                    if (parent < parentsTotal) {
+                        // how many children next parent has?
+                        parent++;
+                        childsTotal = (rawJsonData.getLegs().get(parent).getProviders().size());
+                    }
                 }
             }
+            LOG.info("{Saved JSON to database id:} " + rawJsonData.getId());
         }
-        LOG.info("{Saved JSON to database}");
+        LOG.info("{Did not update. Db is up to date:} " + rawJsonData.getId());
+
     }
 
     @SneakyThrows

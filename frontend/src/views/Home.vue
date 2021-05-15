@@ -18,12 +18,11 @@
         <v-chip class="ma-2" color="primary" x-small label text-color="white">
           <countdown :end-time="items[0].validUntil">
             <template
-                v-slot:process="anyYouWantedScopName">
-              <span>{{ `Next update in: ${anyYouWantedScopName.timeObj.ceil.s} seconds` }}</span>
+                v-slot:process="apiCountdown">
+              <span>{{ `Next update in: ${apiCountdown.timeObj.ceil.s} seconds` }}</span>
             </template>
-            <template
-                v-slot:finish>
-              <span>Done!</span>
+            <template v-slot:finish v>
+              <span>Refreshing!</span>
             </template>
           </countdown>
         </v-chip>
@@ -53,6 +52,7 @@
                         mobile-breakpoint="800"
                         class="elevation-3"
                         inline
+                        multi-sort
                         :loading="loadTable"
                         loading-text="Loading... Please wait"
                         :key="componentKey">

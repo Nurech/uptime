@@ -22,37 +22,6 @@ public class TimeService {
 
     private static final Logger LOG = LoggerFactory.getLogger(BackendController.class);
 
-    private static final SimpleDateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-
-    @ResponseBody
-    public String myServerTimeHour() {
-        Date d1 = new Date();
-        String formattedDateHour = timeFormat.format(d1);
-        return formattedDateHour;
-    }
-
-    @ResponseBody
-    public String myServerTimeYear() {
-        Date d2 = new Date();
-        String formattedDateYear = dayFormat.format(d2);
-        return formattedDateYear;
-    }
-
-    @SneakyThrows
-    @ResponseBody
-    public String latestValidUntil() {
-        String latestValid = FlightService.downloadJson().substring(58, 86);
-        return latestValid;
-    }
-
-    @SneakyThrows
-    @ResponseBody
-    public String getUpdateDatabaseYear() {
-        String year = FlightService.downloadJson().substring(59, 68);
-        return year;
-    }
-
     @SneakyThrows
     @ResponseBody
     public String getApiUpdateTime() {

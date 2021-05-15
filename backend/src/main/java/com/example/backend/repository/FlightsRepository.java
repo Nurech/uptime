@@ -15,6 +15,9 @@ public interface FlightsRepository extends JpaRepository<Flights, String> {
     // get latest API ID
     Flights findTopByOrderByRowIdDesc ();
 
+    @Query(value = "SELECT * from flights order by row_id desc limit 1;", nativeQuery = true)
+    Flights lastApiId ();
+
     @Query(value = "SELECT id, valid_until, count(*) from flights group by id, valid_until order by valid_until desc;", nativeQuery = true)
     List<Flights> findLatestApi();
 
