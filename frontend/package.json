@@ -7,7 +7,9 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "atpl": "^0.9.3",
     "axios": "^0.21.1",
+    "consolidate": "^0.16.0",
     "core-js": "^3.6.5",
     "moment": "^2.15.2",
     "vee-validate": "3.4.5",

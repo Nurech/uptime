@@ -4,7 +4,6 @@ import com.example.backend.controller.BackendController;
 import com.example.backend.service.FlightService;
 import com.example.backend.service.TimeService;
 import lombok.SneakyThrows;
-import org.joda.time.LocalTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,26 +44,32 @@ public class DynamicSchedulingConfig implements SchedulingConfigurer {
         taskRegistrar.setScheduler(taskExecutor());
         taskRegistrar.addTriggerTask(
 
-                // run update db when data has expired
+                // run update db when next execution has arrived
                 new Runnable() {
                     @Override
                     public void run() {
+                        LOG.info("{Fetching new API info, updating database}");
                         FlightService.downloadJson();
                         flightService.saveJsonToDatabase();
                     }
                 },
 
-                // set trigger to be when time validUntil has arrived
+                // set trigger to be when time validUntil has expired
                 new Trigger() {
                     @Override
                     public Date nextExecutionTime(TriggerContext context) {
-                        long mills = timeService.getNextUpdateTime();
+
+                        // period how long between my server time to new API time
+                        long seconds = timeService.getNextUpdateTime().toStandardSeconds().getSeconds();
+
                         Optional<Date> lastCompletionTime =
                                 Optional.ofNullable(context.lastCompletionTime());
                         Instant nextExecutionTime =
                                 lastCompletionTime.orElseGet(Date::new).toInstant()
-                                        .plusMillis(mills);
-                        LOG.info("Next update in: " + (mills / 1000) / 60 + " minutes and " + (mills / 1000) % 60 + " seconds. At " + LocalTime.now().plusMillis((int) mills));
+                                        .plusSeconds(seconds);
+
+                        LOG.info("{Next update execution is at:} " + nextExecutionTime);
+
                         return Date.from(nextExecutionTime);
                     }
                 }

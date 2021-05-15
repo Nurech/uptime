@@ -14,5 +14,3 @@ module.exports = {
   outputDir: 'target/dist',
   assetsDir: 'static'
 };
-const compiler = require('vue-template-compiler')
-const { VueLoaderPlugin } = require('vue-loader')

@@ -61,13 +61,61 @@ public class Flights extends ServerInfo {
     @Column(name = "booking_id")
     private String bookingId;
 
+    public Flights() {
+    }
+
+    @Override
+    public String toString() {
+        return "Flights{" +
+                "rowId=" + rowId +
+                ", id='" + id + '\'' +
+                ", validUntil='" + validUntil + '\'' +
+                ", legsId='" + legsId + '\'' +
+                ", routeId='" + routeId + '\'' +
+                ", routeFromId='" + routeFromId + '\'' +
+                ", routeFromName='" + routeFromName + '\'' +
+                ", routeToId='" + routeToId + '\'' +
+                ", routeToName='" + routeToName + '\'' +
+                ", routeDistance=" + routeDistance +
+                ", providerId='" + providerId + '\'' +
+                ", providerPrice=" + providerPrice +
+                ", providerFlightStart='" + providerFlightStart + '\'' +
+                ", providerFlightEnd='" + providerFlightEnd + '\'' +
+                ", providerCompanyId='" + providerCompanyId + '\'' +
+                ", providerCompanyName='" + providerCompanyName + '\'' +
+                ", bookingId='" + bookingId + '\'' +
+                '}';
+    }
+
+    public Flights(long rowId, String id, String validUntil, String legsId, String routeId, String routeFromId, String routeFromName, String routeToId, String routeToName, long routeDistance, String providerId, double providerPrice, String providerFlightStart, String providerFlightEnd, String providerCompanyId, String providerCompanyName, String bookingId) {
+        this.rowId = rowId;
+        this.id = id;
+        this.validUntil = validUntil;
+        this.legsId = legsId;
+        this.routeId = routeId;
+        this.routeFromId = routeFromId;
+        this.routeFromName = routeFromName;
+        this.routeToId = routeToId;
+        this.routeToName = routeToName;
+        this.routeDistance = routeDistance;
+        this.providerId = providerId;
+        this.providerPrice = providerPrice;
+        this.providerFlightStart = providerFlightStart;
+        this.providerFlightEnd = providerFlightEnd;
+        this.providerCompanyId = providerCompanyId;
+        this.providerCompanyName = providerCompanyName;
+        this.bookingId = bookingId;
+    }
+
     public long getRowId() {
         return rowId;
     }
 
+
     public void setRowId(long rowId) {
         this.rowId = rowId;
     }
+
 
     @Override
     public String getId() {

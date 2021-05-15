@@ -26,6 +26,5 @@ new Vue({
   render: h => h(App)
 }).$mount('#app')
 // src/main.js
-const compiler = require('vue-template-compiler')
-const { VueLoaderPlugin } = require('vue-loader')
+
 

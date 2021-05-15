@@ -1,6 +1,4 @@
-
 // webpack.config.js
-const { VueLoaderPlugin } = require('vue-loader')
 
 module.exports = {
     module: {
@@ -31,8 +29,4 @@ module.exports = {
         ],
     },
 
-    plugins: [
-        // make sure to include the plugin!
-        new VueLoaderPlugin()
-    ]
 }

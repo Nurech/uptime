@@ -13,19 +13,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-import static java.nio.file.Files.writeString;
 
 @Service
 @EnableScheduling
@@ -74,9 +71,10 @@ public class FlightService {
         return dataList;
     }
 
+    @Transactional
     @SneakyThrows
-    // deadman solution to run this only once at startup to get fresh data when testing on local
-    @Scheduled(initialDelay = 1000 * 30, fixedDelay = Long.MAX_VALUE)
+    // dead-man solution to run this only once at startup after 10 seconds to get fresh data when testing on local
+    @Scheduled(initialDelay = 1000 * 10, fixedDelay = Long.MAX_VALUE)
     public void saveJsonToDatabase() {
 
         // get data
@@ -126,16 +124,16 @@ public class FlightService {
                 }
             }
         }
-        LOG.info("{Saved JSON to db}");
+        LOG.info("{Saved JSON to database}");
     }
 
     @SneakyThrows
     public static String downloadJson() {
 
+        // download API JSON
         String jsonUrl = "https://cosmos-odyssey.azurewebsites.net/api/v1.0/TravelPrices";
-
-        // download original JSON
         String json = "";
+
         try {
             URL url = new URL(jsonUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -145,21 +143,13 @@ public class FlightService {
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("charset", "utf-8");
             connection.connect();
+            connection.setConnectTimeout(10);
             InputStream inStream = connection.getInputStream();
             json = streamToString(inStream); // input stream to string
-
-            // save string as JSON
-            Path path = Paths.get("backend/src/main/resources/downloads/original.json");
-            String contents = json;
-            try {
-                writeString(path, contents, StandardCharsets.UTF_8);
-            } catch (IOException ex) {
-                // TODO Handle exception
-            }
+            LOG.info("{\"Status\":\"JSON Downloaded\"} " + json.substring(1, 44) + "...");
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        LOG.info("{\"Status\":\"JSON Downloaded\"} " + json.substring(1, 44) + "...");
         return json;
     }
 

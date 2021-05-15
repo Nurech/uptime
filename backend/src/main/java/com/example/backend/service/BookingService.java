@@ -4,7 +4,6 @@ import com.example.backend.controller.BackendController;
 import com.example.backend.entity.Bookings;
 import com.example.backend.entity.Flights;
 import com.example.backend.model.Booking;
-import com.example.backend.model.Flight;
 import com.example.backend.repository.BookingsRepository;
 import com.example.backend.repository.FlightsRepository;
 import lombok.SneakyThrows;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -32,52 +32,41 @@ public class BookingService {
     @SneakyThrows
     public List<Booking> getLatestBookings() {
 
-        LOG.info("GET latest bookings data");
+        LOG.info("{GET latest bookings data}");
 
-        List<Flight> lastApiList = new ArrayList<>();
-        List<Flights> allInfo = flightsRepository.findAll();
+        // get all unique api ID's in descending order
+        List<Flights> last15ApiIdDesc = flightsRepository.findApiIdUniqueDesc();
 
-        // go over all list
-        for (int i = 0; i < allInfo.size() - 1; i++) {
+        // get last 10 bookings
+        List <Bookings> last10Bookings = bookingsRepository.findLast10Bookings();
 
-            // if next is not previous add to list
-            if (!allInfo.get(i).equals(allInfo.get(i + 1))) {
-                Flight flight = new Flight();
-                flight.setId(allInfo.get(i).getId());
-                lastApiList.add(flight);
-            }
-        }
+        // return data list
+        List <Booking> returnBookings = new ArrayList<>();
 
+        for (int i = 0; i < last10Bookings.size();i++){
 
-        LOG.info("Last API list size is: " + lastApiList.size());
-        List<Bookings> bookingEntity = bookingsRepository.findAllWhereNotNull();
-        LOG.info("Found booking records. List size is: " + bookingEntity.size());
+            Booking lastBooking = new Booking();
+            lastBooking.setUserIdNr(last10Bookings.get(i).getUserIdNr());
+            lastBooking.setBookingId(last10Bookings.get(i).getBookingId());
+            lastBooking.setApiId(last10Bookings.get(i).getApiId());
+            lastBooking.setFirstName(last10Bookings.get(i).getFirstName());
+            lastBooking.setLastName(last10Bookings.get(i).getLastName());
 
-        // where to save all latest results
-        List<Booking> bookingDataList = new ArrayList<>();
-
-        // find last 10 records
-        for (int i = 0; i < 10; i++) {
-
-            // create obj in loop
-            Booking bookingData = new Booking();
-            bookingData.setUserIdNr(bookingEntity.get(i).getUserIdNr());
-            bookingData.setBookingId(bookingEntity.get(i).getBookingId());
-            bookingData.setFirstName(bookingEntity.get(i).getFirstName());
-            bookingData.setLastName(bookingEntity.get(i).getLastName());
-            bookingData.setApiId(bookingEntity.get(i).getApiId());
-            bookingData.setIsValidPrice("false");
-
-            // if booking is in last 15 api list then price is valid (booking expires after 15 API refreshes)
-            for (int j = 0; j < lastApiList.size(); j++) {
-                if (bookingEntity.get(i).getApiId().equals(lastApiList.get(j).getId())) {
-                    bookingData.setIsValidPrice("true");
+            //check if this booking is in last 15 API ID's, set default to false
+            lastBooking.setIsValidPrice("false");
+            for (int j = 0; j < last15ApiIdDesc.size();j++){
+                if (Objects.equals(last10Bookings.get(i).getApiId(), last15ApiIdDesc.get(j).getId())){
+                    lastBooking.setIsValidPrice("true");
                 }
             }
-            bookingDataList.add(bookingData);
+            returnBookings.add(lastBooking);
         }
+
+        // find all unique API ID's
+        LOG.info("{Unique API list size is:} " + last15ApiIdDesc.size());
+
         // return last 10 bookings
-        return bookingDataList;
+        return returnBookings;
     }
 
     public void saveBooking(Booking booking) {

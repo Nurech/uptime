@@ -11,8 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 @Service
 public class TimeService {
@@ -53,45 +56,32 @@ public class TimeService {
     @SneakyThrows
     @ResponseBody
     public String getApiUpdateTime() {
-        try {
-            // get latest valid until hour from latest API JSON
-            String fullTime = FlightService.downloadJson().substring(59, 78);
-            return fullTime;
-        } catch (Exception e) {
-            LOG.info("Latest info check error. Maybe API is down?");
-        } finally {
-            LOG.info("{OK}");
-        }
-        // download JSON
-        //TODO make this better
         String fullTime = FlightService.downloadJson().substring(59, 78);
+        LOG.info("{Get API update time, its:} " + fullTime);
         return fullTime;
     }
 
     @ResponseBody
     @SneakyThrows
-    public long getNextUpdateTime() {
+    public Period getNextUpdateTime() {
 
-        // Z stands for timezone is Zulu (UTC)
-        // 2021-05-09T06:21:43.183977Z
-        // my time is 3 hours behind from API server
-        DateTime startDate = DateTime.now();
-
-        String dateTime = getApiUpdateTime();
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss");
-        DateTime endDate = DateTime.parse(dateTime, formatter);
+
+        // my time
+        Date localTime = new Date();
+        DateFormat s = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        s.setTimeZone(TimeZone.getTimeZone("GMT"));
+        DateTime myGmtTime = DateTime.parse(s.format(localTime));
+        LOG.info("{My server time is:} " + localTime);
+        LOG.info("{My server time in GMT is:} " + s.format(localTime));
+
+        // update time is in GMT. no need to format, only parse
+        DateTime updateTime = DateTime.parse(getApiUpdateTime(), formatter);
 
         // how long till next update in mills
-        Period period = new Period(startDate, endDate, PeriodType.millis());
-        long nextUpdate = period.getMillis();
+        Period period = new Period(myGmtTime, updateTime, PeriodType.millis());
+        LOG.info("{Next update in seconds:} " + period.toStandardSeconds());
 
-        LOG.info("my time: " + myServerTimeHour());
-        LOG.info("update time: " + latestValidUntil());
-        LOG.info("startDate: " + startDate);
-        LOG.info("endDate: " + endDate);
-        LOG.info("mills until update: " + nextUpdate);
-        LOG.info("will update in seconds: " + period.toStandardSeconds());
-        LOG.info("GET called on getUpdateTimeDifference");
-        return nextUpdate;
+        return period;
     }
 }
