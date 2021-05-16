@@ -1,12 +1,15 @@
 #COSMOS ODYSSEY
 
-Assignment: https://smallpdf.com/result#r=106d0db12b1fdcb0e563bafc6b42d56d&t=share-document
+Assignment: https://imgur.com/a/QE3o1hP
 
-![](images/img_1.png)
+Data: https://cosmos-odyssey.azurewebsites.net/api/v1.0/TravelPrices
 
 Deployed: http://cosmosodyssey-env.eba-xae9f38t.us-east-2.elasticbeanstalk.com/
 
+![](images/img_1.png)
+
 ![](images/img_2.png)
+
 ![](images/img_4.png)
 
 ## How to use
@@ -25,7 +28,7 @@ uptime (Maven project)
 ├─┬ backend (Spring Boot)
 │ ├── src
 │ └── pom.xml
-├─┬ frontend (Vue3.js)
+├─┬ frontend (Vue2.js)
 │ ├── src
 │ └── pom.xml
 └── pom.xml (parent POM managing both modules)
@@ -60,7 +63,7 @@ uptime (Maven project)
 
 ```
 Problems to understand here:
-1. API JSON gets pulled as string and needs to be desirialized
+1. API JSON gets pulled as string and needs to be deserialized
 2. Setting up @Scheduled to keep data fresh
 3. Inserting deconstructred JSON data into db
 4. Setting up frontend and backend communication
