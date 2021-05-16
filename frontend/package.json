@@ -7,6 +7,10 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@popperjs/core": "^2.9.2",
+    "@syncfusion/ej2-base": "^19.1.63",
+    "@syncfusion/ej2-vue-inputs": "^19.1.63",
+    "@nuxtjs/vuetify": "^1.11.3",
     "atpl": "^0.9.3",
     "axios": "^0.21.1",
     "consolidate": "^0.16.0",
@@ -26,7 +30,8 @@
     "vue-router": "^3.2.0",
     "vue-template-compiler": "^2.6.12",
     "vue-uuid": "^2.0.2",
-    "vuetify": "^2.5.0"
+    "vuetify": "^2.5.0",
+    "eslint": "^4.19.1"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.11.3",
