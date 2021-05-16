@@ -51,6 +51,7 @@ public class BookingService {
             lastBooking.setApiId(last10Bookings.get(i).getApiId());
             lastBooking.setFirstName(last10Bookings.get(i).getFirstName());
             lastBooking.setLastName(last10Bookings.get(i).getLastName());
+            lastBooking.setDateTime(last10Bookings.get(i).getDateTime());
 
             //check if this booking is in last 15 API ID's, set default to false
             lastBooking.setIsValidPrice("false");
@@ -77,6 +78,13 @@ public class BookingService {
         bookingEntity.setFirstName(booking.getFirstName());
         bookingEntity.setLastName(booking.getLastName());
         bookingEntity.setBookingId(booking.getBookingId());
+        bookingEntity.setDateTime(booking.getDateTime());
+        bookingEntity.setTravelTime(booking.getTravelTime());
+        bookingEntity.setProviderFlightEnd(booking.getProviderFlightEnd());
+        bookingEntity.setProviderFlightStart(booking.getProviderFlightStart());
+        bookingEntity.setProviderPrice(booking.getProviderPrice());
+        bookingEntity.setProviderCompanyName(booking.getProviderCompanyName());
+
         bookingsRepository.save(bookingEntity);
 
     }

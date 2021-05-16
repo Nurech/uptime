@@ -25,6 +25,77 @@ public class Bookings extends ServerInfo {
     @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "date_time")
+    private String dateTime;
+
+    //TODO remove data duplication, tie to flights table instead with ID's
+    @Column(name = "provider_price")
+    private double providerPrice;
+
+    @Column(name = "travel_time")
+    private long travelTime;
+
+    @Column(name = "provider_flight_end")
+    private String providerFlightEnd;
+
+    @Column(name = "provider_flight_start")
+    private String providerFlightStart;
+
+    @Column(name = "provider_company_name")
+    private String providerCompanyName;
+
+    public String getProviderFlightEnd() {
+        return providerFlightEnd;
+    }
+
+    public String getProviderCompanyName() {
+        return providerCompanyName;
+    }
+
+    public void setProviderCompanyName(String providerCompanyName) {
+        this.providerCompanyName = providerCompanyName;
+    }
+
+    public double getProviderPrice() {
+        return providerPrice;
+    }
+
+    public void setProviderPrice(double providerPrice) {
+        this.providerPrice = providerPrice;
+    }
+
+    public double getTravelTime() {
+        return travelTime;
+    }
+
+    public void setTravelTime(long travelTime) {
+        this.travelTime = travelTime;
+    }
+
+    public String getProviderFlightEnd(String providerFlightEnd) {
+        return this.providerFlightEnd;
+    }
+
+    public void setProviderFlightEnd(String providerFlightEnd) {
+        this.providerFlightEnd = providerFlightEnd;
+    }
+
+    public String getProviderFlightStart() {
+        return providerFlightStart;
+    }
+
+    public void setProviderFlightStart(String providerFlightStart) {
+        this.providerFlightStart = providerFlightStart;
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
+
     public long getUserIdNr() {
         return userIdNr;
     }

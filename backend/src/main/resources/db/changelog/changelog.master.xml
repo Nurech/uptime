@@ -36,6 +36,12 @@
             <column name="api_id" type="text"/>
             <column name="first_name" type="text"/>
             <column name="last_name" type="text"/>
+            <column name="date_time" type="text"/>
+            <column name="provider_price" type="double"/>
+            <column name="travel_time" type="bigint"/>
+            <column name="provider_flight_start" type="text"/>
+            <column name="provider_flight_end" type="text"/>
+            <column name="provider_company_name" type="text"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>

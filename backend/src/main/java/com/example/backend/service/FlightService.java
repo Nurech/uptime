@@ -82,7 +82,7 @@ public class FlightService {
         Flight rawJsonData = mapper.readValue(jsonData, Flight.class);
 
         // if current API ID is not most recent in db then do update
-        if (!rawJsonData.getId().equals(flightsRepository.lastApiId().getId())) {
+        if (flightsRepository.lastApiId() == null || !rawJsonData.getId().equals(flightsRepository.lastApiId().getId())) {
 
             int atObject = 0;
             int parent = 0;

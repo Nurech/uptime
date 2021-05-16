@@ -8,6 +8,60 @@ public class Booking {
     private String firstName;
     private String lastName;
     private String isValidPrice;
+    private String dateTime;
+    private double providerPrice;
+    private long travelTime;
+    private String providerFlightEnd;
+    private String providerFlightStart;
+    private String providerCompanyName;
+
+    public String getProviderCompanyName() {
+        return providerCompanyName;
+    }
+
+    public void setProviderCompanyName(String providerCompanyName) {
+        this.providerCompanyName = providerCompanyName;
+    }
+
+    public double getProviderPrice() {
+        return providerPrice;
+    }
+
+    public void setProviderPrice(double providerPrice) {
+        this.providerPrice = providerPrice;
+    }
+
+    public long getTravelTime() {
+        return travelTime;
+    }
+
+    public void setTravelTime(long travelTime) {
+        this.travelTime = travelTime;
+    }
+
+    public String getProviderFlightEnd() {
+        return providerFlightEnd;
+    }
+
+    public void setProviderFlightEnd(String providerFlightEnd) {
+        this.providerFlightEnd = providerFlightEnd;
+    }
+
+    public String getProviderFlightStart() {
+        return providerFlightStart;
+    }
+
+    public void setProviderFlightStart(String providerFlightStart) {
+        this.providerFlightStart = providerFlightStart;
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
 
     public long getUserIdNr() {
         return userIdNr;

@@ -5,41 +5,46 @@
         <h2 class="font-weight-light mb-2"> COSMOS ODYSSEY </h2>
         <p>Solar System Travel Deals</p>
 
-        <v-chip class="ma-2" color="primary" x-small label text-color="white">API ID: {{ items[0].id }}</v-chip>
-
-        <v-chip class="ma-2" color="primary" x-small label text-color="white">
-          Price list valid until: {{ items[0].validUntil | moment("MM-DD-yyyy HH:mm") }}
+        <v-chip :key="componentKey" class="ma-2" color="primary" x-small label text-color="white">API ID: {{
+            items[0].id
+          }}
+        </v-chip>
+        <v-chip :key="componentKey" class="ma-2" color="primary" x-small label text-color="white">Price list valid
+          until: {{ items[0].validUntil | moment("MM-DD-yyyy HH:mm") }}
+        </v-chip>
+        <v-chip :key="componentKey" class="ma-2" color="primary" x-small label text-color="white">Current server time:
+          {{ new Date() | moment("MM-DD-yyyy HH:mm") }}
         </v-chip>
 
-        <v-chip class="ma-2" color="primary" x-small label text-color="white">
-          Current server time: {{ new Date() | moment("MM-DD-yyyy HH:mm") }}
-        </v-chip>
 
-        <v-chip class="ma-2" color="primary" x-small label text-color="white">
-          <countdown :end-time="items[0].validUntil">
-            <template
-                v-slot:process="apiCountdown">
-              <span>{{ `Next update in: ${apiCountdown.timeObj.ceil.s} seconds` }}</span>
-            </template>
-            <template v-slot:finish v>
-              <span>Refreshing!</span>
-            </template>
-          </countdown>
-        </v-chip>
+        <countdown :end-time="items[0].validUntil" :key="componentKey">
+          <template v-slot:process="apiCountdown">
+            <v-chip :key="componentKey" class="ma-2" color="primary" x-small label text-color="white">
+              {{ `Next update in: ${apiCountdown.timeObj.ceil.s} seconds` }}
+            </v-chip>
+          </template>
+          <!--            keeping refresh as button to prevent automatic GET requests... I'm on free tier-->
+          <template v-slot:finish>
+            <v-btn x-small class="ma-2" color="error" @click="forceRerender" :key="componentKey">Refresh!</v-btn>
+          </template>
+        </countdown>
 
 
         <v-card>
           <v-card-title>
-            All Flights
+            Standard Flights
             <v-spacer></v-spacer>
             <div>
-              <v-select v-model="selectedHeaders" :items="headers" label="Select Columns" multiple outlined
-                        return-object>
+              <v-btn small block>custom flight</v-btn>
+            </div>
+            <v-spacer></v-spacer>
+            <div>
+              <v-select v-model="selectedHeaders" :items="headers" label="Select Columns" multiple outlined return-object>
                 <template v-slot:selection="{ item, index }">
-                  <v-chip v-if="index < 5">
+                  <v-chip v-if="index < 3">
                     <span>{{ item.text }}</span>
                   </v-chip>
-                  <span v-if="index === 5" class="grey--text caption">(+{{ selectedHeaders.length - 2 }} others)</span>
+                  <span v-if="index === 3" class="grey--text caption">(+{{ selectedHeaders.length - 2 }} others)</span>
                 </template>
               </v-select>
             </div>
@@ -58,11 +63,18 @@
                         :key="componentKey">
 
             <template v-slot:item.providerPrice="{ item }">
-              <v-chip :color="getColor(item.providerPrice)" text-color="black" small label class="mr-2"> {{ item.providerPrice+'$'}}</v-chip>
+              <v-chip :color="getColor(item.providerPrice)" text-color="black" small label class="mr-2">
+                {{ item.providerPrice + '$' }}
+              </v-chip>
             </template>
 
-            <template v-slot:item.providerFlightEnd="{ item }">{{ item.providerFlightEnd | moment("MM-DD-yyyy HH:mm") }}</template>
-            <template v-slot:item.providerFlightStart="{ item }">{{ item.providerFlightStart | moment("MM-DD-yyyy HH:mm") }}</template>
+            <template v-slot:item.providerFlightEnd="{ item }">{{
+                item.providerFlightEnd | moment("MM-DD-yyyy HH:mm")
+              }}
+            </template>
+            <template v-slot:item.providerFlightStart="{ item }">
+              {{ item.providerFlightStart | moment("MM-DD-yyyy HH:mm") }}
+            </template>
 
             <template v-slot:item.actions="{ item }">
               <div class="text-truncate">
@@ -77,86 +89,93 @@
 
           <v-dialog v-model="dialog" max-width="500px">
             <v-card>
-
-              <v-card-title><span>Booking a flight</span></v-card-title>
+              <v-card-title><span>Booking a standard flight</span></v-card-title>
 
               <validation-observer ref="observer" v-slot="{ invalid }">
-              <form @submit.prevent="submit">
-                <v-card-text>
-
-                  <v-row>
-
-
-                    <v-col cols="12" sm="6">
+                <form @submit.prevent="submit">
+                  <v-card-text>
+                    <v-row>
+                      <v-col cols="12" sm="6">
                         <validation-provider v-slot="{ errors }" name="First Name" rules="required|max:10">
-                          <v-text-field v-model="firstName" :counter="10" :error-messages="errors" label="First Name" required></v-text-field>
+                          <v-text-field v-model="firstName" :counter="10" :error-messages="errors" label="First Name"
+                                        required></v-text-field>
                         </validation-provider>
-                    </v-col>
-
-                    <v-col cols="12" sm="6">
+                      </v-col>
+                      <v-col cols="12" sm="6">
                         <validation-provider v-slot="{ errors }" name="Last Name" rules="required|max:10">
-                          <v-text-field v-model="lastName" :counter="10" :error-messages="errors" label="Last Name" required></v-text-field>
+                          <v-text-field v-model="lastName" :counter="10" :error-messages="errors" label="Last Name"
+                                        required></v-text-field>
                         </validation-provider>
-                    </v-col>
+                      </v-col>
+                      <v-col cols="12" sm="4">
+                        <v-text-field :value="Math.floor((new Date(editedItem.providerFlightStart) - new Date(editedItem.providerFlightEnd)) / (1000*60*-1))+' minutes'" label="Travel time is" disabled></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="4">
+                        <v-text-field :value="editedItem.providerPrice+'$'" label="Travel price is" disabled></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="4">
+                        <v-text-field :value="editedItem.providerCompanyName" label="Transport Company" disabled></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6">
+                        <v-text-field :value="editedItem.providerFlightStart" label="Flight Start" disabled></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6">
+                        <v-text-field :value="editedItem.providerFlightEnd" label="Flight End" disabled></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="12">
+                        <v-text-field :value="generatedId" label="Booking ID" disabled></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="12">
+                        <v-text-field :value="editedItem.id" label="Flight ID" disabled></v-text-field>
+                      </v-col>
 
+                    </v-row>
+                  </v-card-text>
 
-
-                    <v-col cols="12" sm="6">
-                      <v-text-field
-                          :value="Math.floor((new Date(editedItem.providerFlightStart) - new Date(editedItem.providerFlightEnd)) / (1000*60*-1))+' minutes'"
-                          label="Travel time is" disabled></v-text-field>
-                    </v-col>
-
-                    <v-col cols="12" sm="6">
-                      <v-text-field :value="editedItem.providerPrice+'$'" label="Travel price is"
-                                    disabled></v-text-field>
-                    </v-col>
-
-                    <v-col cols="12" sm="12">
-                      <v-text-field :value="generatedId" label="Booking ID" disabled></v-text-field>
-                    </v-col>
-
-                    <v-col cols="12" sm="12">
-                      <v-text-field :value="editedItem.id" label="Flight ID" disabled></v-text-field>
-                    </v-col>
-
-                  </v-row>
-                </v-card-text>
-
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-chip class="ma-2" color="alert" x-small label text-color="black">Not saving empty fields</v-chip>
-                  <v-btn class="mr-4" type="submit" text-color="black" :disabled="invalid" @click="saveItem(editedItem); clear">submit</v-btn>
-                </v-card-actions>
-              </form>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-chip class="ma-2" color="alert" x-small label text-color="black">Not saving empty fields</v-chip>
+                    <v-btn class="mr-4" type="submit" text-color="black" :disabled="invalid"
+                           @click="saveItem(editedItem); clear; forceRerender()">submit
+                    </v-btn>
+                  </v-card-actions>
+                </form>
               </validation-observer>
             </v-card>
           </v-dialog>
         </v-card>
 
-
         <v-divider></v-divider>
+
         <v-subheader>Last 10 bookings</v-subheader>
         <template>
-          <v-simple-table  dense :loading="loadTable1" loading-text="Loading... Please wait">
+          <v-simple-table dense :loading="loadTable1" loading-text="Loading... Please wait" :key="componentKey">
             <template>
               <thead>
               <tr>
-                <th class="text-left">First Name</th>
-                <th class="text-left">Last Name</th>
-                <th class="text-left">On valid price list?</th>
-                <th class="text-left">Booking ID</th>
-                <th class="text-left">API ID</th>
+                <th class="text-center">First Name</th>
+                <th class="text-center">Last Name</th>
+                <th class="text-center">Booked on</th>
+                <th class="text-center">Valid Price
+                  <v-tooltip top>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-icon color="grey darken-2" dark v-bind="attrs" v-on="on" small>mdi-help-circle</v-icon>
+                    </template>
+                    <span>The price is fixed when a booking has been made. Price stays valid for 15 API refreshes, after that booking expires.</span>
+                  </v-tooltip>
+
+                </th>
+                <th class="text-center">Booking ID</th>
+                <th class="text-center">API ID</th>
               </tr>
               </thead>
 
-              <tbody>
-              <tr v-for="item in bookings.slice()" :key="item.name">
-                <td >{{ item.firstName }}</td>
+              <tbody :key="componentKey">
+              <tr v-for="item in bookings.slice()" :key="item.name" >
+                <td>{{ item.firstName }}</td>
                 <td>{{ item.lastName }}</td>
-                <td>
-                  <v-chip :color="getColorValid(item.isValidPrice)" dark text-color="black"> {{ item.isValidPrice }}</v-chip>
-                </td>
+                <td>{{ item.dateTime | moment("MM-DD-yyyy HH:mm") }}</td>
+                <td><v-chip :color="getColorValid(item.isValidPrice)" dark text-color="black"> {{item.isValidPrice }}</v-chip></td>
                 <td>{{ item.bookingId }}</td>
                 <td>{{ item.apiId }}</td>
               </tr>
@@ -176,8 +195,6 @@ import {uuid} from 'vue-uuid';
 const compiler = require('vue-template-compiler')
 import moment from 'moment'
 const apiToken = "keyZIIVNiQPvozEWb"
-const airTableApp = "appXJzFFs2zgj4X5C"
-const airTableName = "Example"
 import {required, digits, email, max, regex} from 'vee-validate/dist/rules'
 import {extend, ValidationObserver, ValidationProvider, setInteractionMode} from 'vee-validate'
 
@@ -228,14 +245,22 @@ export default {
       },
       // to reload vue components on fresh data
       componentKey: 0,
-
       booking: {},
       travelTime: '',
+      firstName: '',
+      lastName: '',
+      generatedId: '',
+      providerCompanyName: '',
+      providerFlightEnd: '',
+      providerFlightStart: '',
+      providerPrice: '',
+      dateTime: '',
+
       updateApiTime: '',
       bookings: [],
       bookingForm: {},
       editedItem: {},
-      generatedId: '',
+
       items: [],
       serverTime: '',
       selectedHeaders: [],
@@ -245,8 +270,7 @@ export default {
       search: '',
       routeTime: '',
       timer: '',
-      firstName: '',
-      lastName: '',
+
       select: null,
       bookingIdGenerated: this.bookingIdGenerated,
       selectedValue1: '',
@@ -308,7 +332,7 @@ export default {
     },
 
     async clear() {
-      await new Promise(r => setTimeout(r, 1000));
+      await new Promise(r => setTimeout(r, 500));
       this.firstName = ''
       this.lastName = ''
       this.$refs.observer.reset()
@@ -327,6 +351,14 @@ export default {
   },
 
   methods: {
+    async forceRerender() {
+      await new Promise(r => setTimeout(r, 2000));
+      this.loadItems();
+      this.loadBookings();
+      await new Promise(r => setTimeout(r, 5000));
+      // force refresh of components upon action
+      this.componentKey += 1;
+    },
 
     toggleOrder() {
       this.sortDesc = !this.sortDesc
@@ -399,7 +431,6 @@ export default {
       })
     },
 
-
     saveItem(item) {
       let method = "post"
       let url = `api/savebooking`
@@ -408,12 +439,16 @@ export default {
         apiId: item.id,
         firstName: this.firstName,
         lastName: this.lastName,
-        bookingId: this.generatedId
+        bookingId: this.generatedId,
+        providerPrice: item.providerPrice,
+        providerFlightEnd: item.providerFlightEnd,
+        providerFlightStart: item.providerFlightStart,
+        providerCompanyName: item.providerCompanyName,
+        travelTime: Math.floor((new Date(this.editedItem.providerFlightStart) - new Date(this.editedItem.providerFlightEnd)) / (1000*60*-1)),
+        dateTime: moment().toISOString(),
       }
       // save the booking
-      post(url,
-          data,
-          {
+      post(url, data, {
             headers: {
               Authorization: "Bearer " + apiToken,
               "Content-Type": "application/json"
@@ -442,6 +477,7 @@ export default {
                 userId: item.userId,
                 bookingId: item.bookingId,
                 apiId: item.apiId,
+                dateTime: item.dateTime,
                 firstName: item.firstName,
                 lastName: item.lastName,
                 isValidPrice: item.isValidPrice,
