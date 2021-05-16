@@ -1,4 +1,4 @@
-name: cosmos deploy
+name: uptime deploy
 
 on:
   push:
